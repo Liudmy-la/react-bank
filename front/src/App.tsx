@@ -1,7 +1,8 @@
 import React from "react";
+import Index from "./container/index";
 
 function App() {
-  return <div>Hello World</div>;
+  return <Index children/>;
 }
 
 export default App;

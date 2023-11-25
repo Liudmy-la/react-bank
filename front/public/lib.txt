@@ -1,0 +1,34 @@
+font-size:
+	text: 14px
+	sub-titles & buttons: 16px
+	titles: 24px
+
+font-weight: 
+	text & buttons: 400
+	titles & sub-titles: 500
+
+paddind:
+	16px
+
+gap:
+	to text & icons: 8px
+	to sub-titles: 12px
+	to next item: 20px
+	to titles: 32px
+
+border-radius: 
+	12px
+
+color:
+	dark-text: rgb(28, 13, 0)
+	light-text: rgb(255, 254, 252)
+	warning-text: rgb(214, 120, 54)
+	alarm-text &-borders: rgb(217, 43, 73)
+	success-text &-borders: rgb(31, 163, 108)
+	secondary-text &-borders + divider: rgb(145, 144, 142)
+	primary: rgb(104, 81, 194)
+	background-light: rgb(245, 243, 240)
+	background-warning: rgba(242, 136, 61, 0.10)
+
+
+

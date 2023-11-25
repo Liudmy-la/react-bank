@@ -1,0 +1,23 @@
+.page {
+	padding: 20px;
+	margin: 0 auto;
+
+	width: 400px;
+	height: 850px;
+
+	background-color: rgb(255, 254, 252);
+	color: rgb(28, 13, 0);
+	font-family: 'Jost', sans-serif;
+
+	outline: 5px solid rgb(104, 81, 194);
+}
+
+.image {
+	background-image: url("../../../public/png/background.png");
+	background-repeat: no-repeat;
+	border-radius: 0px 0px 32px 32px;
+	width: 400px;
+
+	position: absolute;
+	top: 0;
+}

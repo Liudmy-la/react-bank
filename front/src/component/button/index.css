@@ -1,0 +1,33 @@
+.button {
+	width: 100%;
+	padding: 16px;
+	border-radius: 12px;
+	text-align: center;
+	border: 1px solid transparent;
+}
+
+.button--primary {
+	color: rgb(255, 254, 252);
+	background-color: rgb(104, 81, 194);
+}
+
+.button--primary:hover {
+	cursor: pointer;
+	box-shadow: inset 0px 0px 10px rgb(255, 254, 252);
+}
+
+.button--outline {
+	color: rgb(104, 81, 194);
+	background-color: rgb(255, 254, 252);
+	border: 1px solid rgb(104, 81, 194);
+}
+
+.button--outline:hover {
+	cursor: pointer;
+	box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
+}
+
+.button--alarm {
+	color: rgb(217, 43, 73);
+	border: 1px solid rgb(217, 43, 73);
+}

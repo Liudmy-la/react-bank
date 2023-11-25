@@ -1,0 +1,17 @@
+.heading {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: 500;
+}
+
+.comment {
+	color: rgb(145, 144, 142);
+	font-size: 14px;
+	font-weight: 500;
+}
