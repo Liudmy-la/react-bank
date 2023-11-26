@@ -2,6 +2,7 @@ font-size:
 	text: 14px
 	sub-titles & buttons: 16px
 	titles: 24px
+	important: 36px
 
 font-weight: 
 	text & buttons: 400
@@ -16,18 +17,19 @@ gap:
 	to next item: 20px
 	to titles: 32px
 
-border-radius: 
-	12px
+border-radius:
+	info: 8px
+	input & button: 12px
 
 color:
 	dark-text: rgb(28, 13, 0)
-	light-text: rgb(255, 254, 252)
+	background-color & light-text: rgb(255, 254, 252)
 	warning-text: rgb(214, 120, 54)
 	alarm-text &-borders: rgb(217, 43, 73)
 	success-text &-borders: rgb(31, 163, 108)
 	secondary-text &-borders + divider: rgb(145, 144, 142)
 	primary: rgb(104, 81, 194)
-	background-light: rgb(245, 243, 240)
+	background-white: rgb(255, 255, 254)
 	background-warning: rgba(242, 136, 61, 0.10)
 
 

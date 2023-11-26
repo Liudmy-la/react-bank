@@ -1,6 +1,31 @@
-.start-page {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
 
+.overlay-image {
+	background-image: url("../../../public/png/background.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 70%;
+	border-radius: 0px 0px 32px 32px; 
+	opacity: 0.9;	
+
+	z-index: -2;
 }
+
+.top-image {
+	background-image: url("../../../public/png/cover--money.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	position: absolute;
+	bottom: 25%; /* відступ від нижнього краю */
+	left: 5%;
+	width: 90%;
+	aspect-ratio: 1 / 1; 
+	opacity: 0.9;	
+	
+	z-index: -1;
+  }

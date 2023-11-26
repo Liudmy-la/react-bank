@@ -1,12 +1,19 @@
 import React from 'react';
 import "./index.css";
 
-interface ChildProps {
-  children: React.ReactNode;
+interface ComponentProps {
+	children: React.ReactNode;
+	className?: string;
+	style?: React.CSSProperties;
 }
 
-export default function Component({children}: ChildProps):React.ReactElement {
+export default function Component({children, className = "", style = {}}:ComponentProps):React.ReactElement {
 	return (
-		<div className="button button--primary button--outline">{children}</div>
+		<div 
+			className={className}
+			style={{...style}}
+		>
+			{children}
+		</div>
 	) 
 }

@@ -1,15 +1,21 @@
 import React from 'react';
 import "./index.css";
 
-interface ChildProps {
-  children: React.ReactNode;
+import Column from "../../component/column";
+
+interface ComponentProps {
+	className: string;
+	style?: React.CSSProperties;
+	title: string;
+	comment?: string;
 }
 
-export default function Component({children}: ChildProps):React.ReactElement {
+export default function Component({className = "", style = {}, title = '', comment = ''}:ComponentProps):React.ReactElement {
 	return (
-		<div className="heading">
-			<div className="title">Hello! {children}</div>
-			<div className="comment">Welcome to the bank app {children}</div>
-		</div>
+		<Column className = "column--12">
+			<div className={className}></div>
+			<div className="title" style={{...style}}>{title}</div>
+			<div className="comment" style={{...style}}>{comment}</div>
+		</Column>
 	) 
 }

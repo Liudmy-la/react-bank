@@ -1,5 +1,27 @@
-.column {
+.column--8 {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.column--12 {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+.column--20 {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.column--32 {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.column--space {
+	display: grid;
+	grid-template-rows: 5fr 1fr;
 }

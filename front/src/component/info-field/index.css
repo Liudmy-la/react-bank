@@ -1,0 +1,22 @@
+.warn__field {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+
+	border: 1px solid transparent;
+	background-color: rgba(242, 136, 61, 0.10);
+	padding: 16px;
+	border-radius: 8px;
+	color: rgb(217, 43, 73);	
+}
+
+.warn__icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-image: url("../../../public/svg/icon-warn.svg");
+	background-repeat: no-repeat;
+	background-position: center center;
+}

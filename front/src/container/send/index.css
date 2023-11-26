@@ -1,0 +1,15 @@
+
+.overlay-image {
+	background-image: url("../../../public/png/cover--payment.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+
+	position: absolute;
+	bottom: 20px;
+	left: 5%;
+	width: 90%;
+	aspect-ratio: 1 / 1;
+	opacity: 0.6;	
+
+	z-index: -2;
+}

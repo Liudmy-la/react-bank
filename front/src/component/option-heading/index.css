@@ -1,22 +1,26 @@
+.head__block {	
+	display: flex;
+	justify-content: center;
+
+	margin-bottom: 12px;
+
+	position: relative;
+}
+
 .back {
 	width: 24px;
 	height: 24px;
 	background-image: url("../../../public/svg/icon-back.svg");
 	background-repeat: no-repeat;
 	background-position: center center;
+
+	position: absolute;
+	left: 0;
 }
 
 .title {
 	color: rgb(28, 13, 0);
 	font-size: 24px;
 	font-weight: 500;
-	align-self: center;
-}
-
-.comment {
-	color: rgb(145, 144, 142);
-	font-size: 14px;
-	font-weight: 500;
-	align-self: center;
-	padding-bottom: 12px;
+	justify-items: center;
 }

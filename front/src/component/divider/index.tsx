@@ -2,7 +2,7 @@ import React from 'react';
 import "./index.css";
 
 interface ComponentProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;
 }
@@ -10,10 +10,10 @@ interface ComponentProps {
 export default function Component({children, className = "", style = {}}:ComponentProps):React.ReactElement {
 	return (
 		<div 
-			className={className}
+			className="line"
 			style={{...style}}
 		>
-			{children}
+			
 		</div>
 	)
 }
