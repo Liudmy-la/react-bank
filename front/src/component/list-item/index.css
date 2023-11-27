@@ -1,12 +1,26 @@
 .info__block {
-	display: flex;
-	flex-direction: row;
+	display: grid;
+	grid-template-columns: 40px auto;
 	gap: 12px;
 	align-content: center;
 
 	padding: 16px;
 	background-color: rgb(255, 255, 254);
+	border: 1px solid rgba(145, 144, 142, 0.2);
 	border-radius: 8px;
+}
+
+.inner__block {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;	
+	align-items: center;
+}
+
+.title__block {
+	display: grid;
+	grid-template-rows: 1fr min-content;
+	align-items: center;
 }
 
 .icon {
@@ -14,9 +28,12 @@
 	height: 40px;
 	border-radius: 50%;
 	background-color: rgb(255, 254, 252);
+	border: 1px solid rgba(145, 144, 142, 0.2);
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 
-.title {
+.item-title {
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -25,3 +42,29 @@
 	font-size: 12px;
 	color: rgb(145, 144, 142);
 }
+
+.info {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.stripe {
+	background-image: url('../../../public/svg/icon-s.svg');
+}
+
+.coinbase {
+	background-image: url('../../../public/svg/icon-c.svg');
+}
+
+.owner {
+	background-image: url('../../../public/svg/icon-owner.svg');
+}
+
+.notification {
+	background-image: url('../../../public/svg/icon-notification-dark.svg');
+}
+
+.warn {
+	background-image: url('../../../public/svg/icon-warn.svg');
+}
+
