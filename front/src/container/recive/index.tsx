@@ -28,7 +28,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				<Column className="column--12">
 					<div className="subtitle">Payment system</div>
 					<Listitem className="stripe" style = {{backgroundImage: `url(${process.env.PUBLIC_URL}/svg/group-icons-1.svg)`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Stripe' info=''></Listitem>
-					<Listitem className="coinbase" style = {{backgroundImage: `url(${process.env.PUBLIC_URL}/svg/group-icons-2.svg)`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Coinbase' info=''></Listitem>
+					<Listitem className="coinbase" style = {{backgroundImage: `url(../../../svg/group-icons-2.svg)`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Coinbase' info=''></Listitem>
 				</Column>				
 				
 			</Column>
