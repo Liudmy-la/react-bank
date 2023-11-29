@@ -22,7 +22,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 				<Button className="button button--primary">Send</Button>				
 			</Column>
-			<div className="overlay-image"></div>
+			<div className="action-image"></div>
 		</Page>
 	  )
   }

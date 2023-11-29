@@ -14,9 +14,9 @@ interface ChildProps {
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
-		<Page className="" style = {{}}>			
+		<Page className="actions" style = {{}}>			
 			<Column className="column--20" style = {{}}>  						
-				<Opthead className="" style = {{}} title="Settings"></Opthead>
+				<Opthead className="" style = {{}} title="Receive"></Opthead>
 
 				<Column className="column--8">
 					<div className="subtitle">Receive amount</div>
@@ -27,11 +27,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 				<Column className="column--12">
 					<div className="subtitle">Payment system</div>
-					<Listitem className="stripe" style = {{backgroundImage: `url(${process.env.PUBLIC_URL}/svg/group-icons-1.svg)`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Stripe' info=''></Listitem>
-					<Listitem className="coinbase" style = {{backgroundImage: `url(${process.env.PUBLIC_URL}/svg/group-icons-2.svg)`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Coinbase' info=''></Listitem>
+					<Listitem className="stripe" style = {{backgroundImage: `url("../../../svg/group-icons-1.svg")`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Stripe' info=''></Listitem>
+					<Listitem className="coinbase" style = {{backgroundImage: `url("../../../svg/group-icons-2.svg")`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Coinbase' info=''></Listitem>
 				</Column>				
 				
 			</Column>
+			<div className="action-image"></div>
 		</Page>
 	  )
   }

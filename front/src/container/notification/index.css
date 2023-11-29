@@ -1,0 +1,4 @@
+.notifications .info__block:hover {
+		border-color: transparent;
+		box-shadow: none;
+}

@@ -1,0 +1,36 @@
+.amount-title {
+	color: rgb(31, 163, 108);
+	text-align: center;
+	font-size: 36px;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	padding-bottom: 12px;
+}
+
+.info__card {
+	background-color: rgb(255, 255, 254);
+	padding: 16px;
+	border-radius: 8px;
+}
+
+.info__line {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+
+.action-image {
+	background-image: url("../../../public/png/cover--payment.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+
+	position: absolute;
+	bottom: 20px;
+	left: 5%;
+	width: 90%;
+	aspect-ratio: 1 / 1;
+	opacity: 0.6;	
+
+	z-index: -2;
+}

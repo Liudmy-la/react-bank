@@ -7,13 +7,16 @@ import React from "react";
 // import Confconfirm from "./container/signup-confirm";
 // import Settings from "./container/settings";
 // import Send from "./container/send";
-import Receive from "./container/recive";
+// import Receive from "./container/recive";
+// import Notifications from "./container/notification";
+// import Transaction from "./container/transaction";
+import Balance from "./container/balance";
 
 function App() {
 	return ( 
 		<>
 			{/* <Index children/> */}
-			<Receive children/>
+			<Balance children/>
 		</>
 	)
 }

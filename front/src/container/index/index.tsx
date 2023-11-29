@@ -14,14 +14,14 @@ interface ChildProps {
 	  return (
 		<Page className="" style = {{}}>			
 			<Column className="column--space" style = {{marginTop: '30%'}}>  						
-				<Heading className="" style = {{color:'rgb(255, 254, 252)', fontSize: '1.8rem'}} title="Hello!" comment="Welcome to the bank app"></Heading>
+				<Heading className="" style = {{color:'rgb(255, 255, 254)', fontSize: '1.8rem'}} title="Hello!" comment="Welcome to the bank app"></Heading>
 				<Column className="column--12">
 					<Button className="button button--primary">Sign Up</Button>					
 					<Button className="button button--primary button--outline">Sign In</Button>
 				</Column>
 			</Column>				
-			<div className="overlay-image"></div>
+			<div className="main-image"></div>
 			<div className="top-image"></div>
 		</Page>
 	  )
-  }
+  } 

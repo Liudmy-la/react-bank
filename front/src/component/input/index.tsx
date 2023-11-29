@@ -2,7 +2,7 @@ import React from 'react';
 import "./index.css";
 import Column from "../../component/column";
 
-interface ComponentProps {
+interface ChildProps {
 	children?: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;
@@ -11,7 +11,7 @@ interface ComponentProps {
 	placeholder?: string;
 }
 
-export default function Component({children, className = "", style = {}, label = "", message = "", placeholder = ""}:ComponentProps):React.ReactElement {
+export default function Component({children, className = "", style = {}, label = "", message = "", placeholder = ""}:ChildProps):React.ReactElement {
 	return (
 		<>
 			<Column className = "column--8">

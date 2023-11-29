@@ -1,16 +1,16 @@
 import React from 'react';
 import "./index.css";
 
-interface ComponentProps {
+interface ChildProps {
 	children: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;
 }
 
-export default function Component({children, className = "", style = {}}:ComponentProps):React.ReactElement {
+export default function Component({children, className = "", style = {}}:ChildProps):React.ReactElement {
 	return (
 		<div 
-			className="page"
+			className={`page ${className}`}
 			style={{...style}}
 		>
 			{children}

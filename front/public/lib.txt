@@ -23,14 +23,14 @@ border-radius:
 
 color:
 	dark-text: rgb(28, 13, 0)
-	background-color & light-text: rgb(255, 254, 252)
+	background-white & light-text: rgb(255, 255, 254)
+	background-warning: rgba(242, 136, 61, 0.10)
+	actions_background-color : rgb(252, 250, 252)
 	warning-text: rgb(214, 120, 54)
 	alarm-text &-borders: rgb(217, 43, 73)
 	success-text &-borders: rgb(31, 163, 108)
 	secondary-text &-borders + divider: rgb(145, 144, 142)
 	primary: rgb(104, 81, 194)
-	background-white: rgb(255, 255, 254)
-	background-warning: rgba(242, 136, 61, 0.10)
 
 
 

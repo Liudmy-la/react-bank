@@ -1,13 +1,13 @@
 import React from 'react';
 import "./index.css";
 
-interface ComponentProps {
+interface ChildProps {
 	className?: string;
 	style?: React.CSSProperties;
 	title: string;
 }
 
-export default function Component({className = "", style = {}, title = ''}:ComponentProps):React.ReactElement {
+export default function Component({className = "", style = {}, title = ''}:ChildProps):React.ReactElement {
 	return (
 		<div className="head__block">
 			<div className='back'></div>

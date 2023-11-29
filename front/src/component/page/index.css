@@ -5,7 +5,7 @@
 	width: 400px;
 	height: 850px;
 
-	background-color: rgb(255, 254, 252);
+	background-color: rgb(255, 255, 254);
 	color: rgb(28, 13, 0);
 	font-family: 'Jost', sans-serif;
 	font-size: 14px;
@@ -14,4 +14,8 @@
 	z-index: 0;
 
 	outline: 8px solid rgba(104, 81, 194, 0.233);
+}
+
+.actions {
+	background-color: rgb(252, 250, 252);
 }

@@ -6,6 +6,10 @@
 	background-position: center center;
 }
 
+.back:hover {	
+	cursor: pointer;
+}
+
 .title {
 	color: rgb(28, 13, 0);
 	font-size: 24px;

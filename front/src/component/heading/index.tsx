@@ -3,14 +3,14 @@ import "./index.css";
 
 import Column from "../../component/column";
 
-interface ComponentProps {
+interface ChildProps {
 	className: string;
 	style?: React.CSSProperties;
 	title: string;
 	comment?: string;
 }
 
-export default function Component({className = "", style = {}, title = '', comment = ''}:ComponentProps):React.ReactElement {
+export default function Component({className = "", style = {}, title = '', comment = ''}:ChildProps):React.ReactElement {
 	return (
 		<Column className = "column--12">
 			<div className={className}></div>

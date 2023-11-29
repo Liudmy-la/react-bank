@@ -16,7 +16,7 @@
 
 .disabled {
 	cursor: not-allowed;
-	background-color: rgb(255, 254, 252);
+	background-color: rgb(255, 255, 254);
 }
 
 .active {

@@ -8,18 +8,18 @@
 }
 
 .button--primary {
-	color: rgb(255, 254, 252);
+	color: rgb(255, 255, 254);
 	background-color: rgb(104, 81, 194);
 }
 
 .button--primary:hover {
 	cursor: pointer;
-	box-shadow: inset 0px 0px 10px rgb(255, 254, 252);
+	box-shadow: inset 0px 0px 10px rgb(255, 255, 254);
 }
 
 .button--outline {
 	color: rgb(104, 81, 194);
-	background-color: rgb(255, 254, 252);
+	background-color: rgb(255, 255, 254);
 	border: 1px solid rgb(104, 81, 194);
 }
 

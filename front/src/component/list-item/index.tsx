@@ -1,7 +1,7 @@
 import React from 'react';
 import "./index.css";
 
-interface ComponentProps {
+interface ChildProps {
 	className?: string;
 	style?: React.CSSProperties;
 	itemtitle: string;
@@ -9,7 +9,7 @@ interface ComponentProps {
 	info?: any;
 }
 
-export default function Component({className = "", style = {}, itemtitle = '', info, details}:ComponentProps):React.ReactElement {
+export default function Component({className = "", style = {}, itemtitle = '', info, details}:ChildProps):React.ReactElement {
 	return (
 		<div className="info__block">
 			<div className={`icon ${className}`}></div>
