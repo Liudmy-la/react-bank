@@ -1,4 +1,4 @@
-.warn__field {
+.infofield {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -6,10 +6,18 @@
 	gap: 8px;
 
 	border: 1px solid transparent;
-	background-color: rgba(242, 136, 61, 0.10);
 	padding: 16px;
 	border-radius: 8px;
+}
+
+.field--warn {
+	background-color: rgba(242, 136, 61, 0.10);
 	color: rgb(217, 43, 73);	
+}
+
+.field--success {
+	background-color: rgba(31, 163, 108, 0.10);
+	color: rgb(31, 163, 108);
 }
 
 .warn__icon {
@@ -19,4 +27,8 @@
 	background-image: url("../../../public/svg/icon-warn.svg");
 	background-repeat: no-repeat;
 	background-position: center center;
+}
+
+.disabled {
+	display: none;
 }

@@ -5,7 +5,8 @@ interface ChildProps {
 	children: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;	
-	onClick?: () => void;
+	onClick?: any;
+	type?: any;
 }
 
 export default function Component({children, className = "", style = {}, onClick}:ChildProps):React.ReactElement {

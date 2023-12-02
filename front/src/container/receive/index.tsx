@@ -29,6 +29,8 @@ export default function Component({children}: ChildProps):React.ReactElement {
 					<div className="subtitle">Payment system</div>
 					<Listitem className="stripe" style = {{backgroundImage: `url("../../../svg/group-icons-1.svg")`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Stripe' info=''></Listitem>
 					<Listitem className="coinbase" style = {{backgroundImage: `url("../../../svg/group-icons-2.svg")`, width:'160px', height:'20px', zIndex: '2'}} itemtitle='Coinbase' info=''></Listitem>
+				{/* {newTransaction ? <Location to={`/transaction/${newTransaction.id}`} /> : <Infofield error />}		 */}
+
 				</Column>				
 				
 			</Column>

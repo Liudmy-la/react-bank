@@ -20,7 +20,9 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
 				<Input label = "Sum" message = "" placeholder = "Enter amount"></Input>
 
-				<Button className="button button--primary">Send</Button>				
+				<Button className="button button--primary">Send</Button>
+			{/* {newTransaction ? <Location to={`/transaction/${newTransaction.id}`} /> : <Infofield error />}		 */}
+
 			</Column>
 			<div className="action-image"></div>
 		</Page>
