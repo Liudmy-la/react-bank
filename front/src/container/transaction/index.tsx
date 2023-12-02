@@ -14,7 +14,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
 		<Page className="actions" style = {{}}>
 			<Column className="column--20" style = {{}}>  						
-				<Opthead className="" style = {{}} title="Transaction"></Opthead>
+				<Opthead backTo="balance" className="" style = {{}} title={`Transaction: ${children}`}></Opthead>
 
 				<div className="amount-title">$100.20</div>
 

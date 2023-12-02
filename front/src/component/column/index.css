@@ -32,7 +32,15 @@
 	gap: 32px;
 }
 
-.column--space {
+.column--grid {
 	display: grid;
-	grid-template-rows: 5fr 1fr;
+}
+
+.grid--main {
+	grid-template-rows: 650px 120px;
+}
+
+.grid--heading {
+	grid-template-rows: repeat(3, 1fr);
+	gap: 12px;
 }

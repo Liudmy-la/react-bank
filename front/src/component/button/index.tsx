@@ -4,16 +4,18 @@ import "./index.css";
 interface ChildProps {
 	children: React.ReactNode;
 	className?: string;
-	style?: React.CSSProperties;
+	style?: React.CSSProperties;	
+	onClick?: () => void;
 }
 
-export default function Component({children, className = "", style = {}}:ChildProps):React.ReactElement {
-	return (
+export default function Component({children, className = "", style = {}, onClick}:ChildProps):React.ReactElement {
+	return (		
 		<div 
 			className={className}
 			style={{...style}}
+			onClick={onClick}
 		>
 			{children}
-		</div>
+		</div>		
 	) 
 }

@@ -1,23 +1,39 @@
 import "./index.css";
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Page from "../../component/page";
-import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 
 interface ChildProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
   
   export default function Component({children}: ChildProps):React.ReactElement {
+	const navigate = useNavigate();
+
+	const handleSignupClick = () => {
+		navigate("/signup");
+	}
+	const handleSigninClick = () => {
+		navigate("/signin");
+	}
+
 	  return (
-		<Page className="" style = {{}}>			
-			<Column className="column--space" style = {{marginTop: '30%'}}>  						
-				<Heading className="" style = {{color:'rgb(255, 255, 254)', fontSize: '1.8rem'}} title="Hello!" comment="Welcome to the bank app"></Heading>
+		<Page>			
+			<Column className="column--grid grid--main">  						
+				<div className="hello__block">
+					<div className="hello__title">Hello!</div>
+					<div className="hello__text">Welcome to the bank app</div>
+				</div>
 				<Column className="column--12">
-					<Button className="button button--primary">Sign Up</Button>					
-					<Button className="button button--primary button--outline">Sign In</Button>
+					<Button className="button button--primary" onClick={handleSignupClick}>
+						Sign Up
+					</Button>					
+					<Button className="button button--primary button--outline" onClick={handleSigninClick}>
+						Sign In
+					</Button>
 				</Column>
 			</Column>				
 			<div className="main-image"></div>

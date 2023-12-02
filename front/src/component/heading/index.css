@@ -1,26 +1,14 @@
-.back {
-	width: 24px;
-	height: 24px;
-	background-image: url("../../../public/svg/icon-back.svg");
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-.back:hover {	
-	cursor: pointer;
-}
-
 .title {
 	color: rgb(28, 13, 0);
 	font-size: 24px;
 	font-weight: 500;
-	align-self: center;
+	text-align: center;
 }
 
 .comment {
 	color: rgb(145, 144, 142);
 	font-size: 14px;
 	font-weight: 500;
-	align-self: center;
+	text-align: center;
 	padding-bottom: 12px;
 }

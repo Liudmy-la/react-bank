@@ -8,14 +8,14 @@ import Button from "../../component/button";
 import Input from "../../component/input";
 
 interface ChildProps {
-	children: React.ReactNode;
+	children: React.ReactNode;	
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
 		<Page className="" style = {{}}>			
 			<Column className="column--20" style = {{}}>  						
-				<Heading className="back" style = {{}} title="Recover password" comment="Choose a recovery method"></Heading>
+				<Heading backTo="signin" title="Recover password" comment="Choose a recovery method"></Heading>
 
 				<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
 

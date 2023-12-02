@@ -1,0 +1,11 @@
+.back {
+	width: 24px;
+	height: 24px;
+	background-image: url("../../../public/svg/icon-back.svg");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.back:hover {	
+	cursor: pointer;
+}

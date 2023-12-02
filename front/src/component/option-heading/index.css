@@ -1,30 +1,12 @@
-.head__block {	
-	display: flex;
-	justify-content: center;
-
+.head__option {	
+	display: grid;
+	grid-template-columns: 24px 1fr 24px;
 	margin-bottom: 12px;
-
-	position: relative;
-}
-
-.back {
-	width: 24px;
-	height: 24px;
-	background-image: url("../../../public/svg/icon-back.svg");
-	background-repeat: no-repeat;
-	background-position: center center;
-
-	position: absolute;
-	left: 0;
-}
-
-.back:hover {	
-	cursor: pointer;
 }
 
 .title {
 	color: rgb(28, 13, 0);
 	font-size: 24px;
 	font-weight: 500;
-	justify-items: center;
+	text-align: center;
 }

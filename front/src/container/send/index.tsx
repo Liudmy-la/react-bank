@@ -15,7 +15,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
 		<Page className="" style = {{}}>			
 			<Column className="column--20" style = {{}}>  			
-				<Opthead className="" style = {{}} title="Send"></Opthead>			
+				<Opthead backTo="balance" className="" style = {{}} title="Send"></Opthead>			
 
 				<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
 				<Input label = "Sum" message = "" placeholder = "Enter amount"></Input>

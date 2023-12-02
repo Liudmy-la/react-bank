@@ -1,0 +1,38 @@
+.error {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	padding-top: 30%;
+	gap: 20px;
+
+	font-size: 24px;
+}
+
+.error-text {
+	color: rgb(217, 43, 73);
+}
+
+.back-home {
+	color: rgb(104, 81, 194);
+	font-weight: 500;
+}
+
+.back-home:hover {
+	cursor: pointer;
+}
+
+
+.error-image {
+	background-image: url("../../../public/png/cover--money.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+
+	position: absolute;
+	bottom: 25%;
+	left: 5%;
+	width: 90%;
+	aspect-ratio: 1 / 1;
+	opacity: 0.6;	
+
+	z-index: -2;
+}

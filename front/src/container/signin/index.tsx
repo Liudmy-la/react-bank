@@ -1,6 +1,7 @@
 import "./index.css";
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Page from "../../component/page";
 import Heading from "../../component/heading";
 import Column from "../../component/column";
@@ -13,16 +14,16 @@ interface ChildProps {
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
-		<Page className="" style = {{}}>			
-			<Column className="column--20" style = {{}}>  						
-				<Heading className="back" style = {{}} title="Sign in" comment="Select login method"></Heading>
+		<Page>			
+			<Column className="column--20">  						
+				<Heading backTo=""  title="Sign in" comment="Select login method"></Heading>
 
 				<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
 				<Input label = "Password" className="appear" style = {{borderColor: 'rgb(217, 43, 73)', color: 'rgb(217, 43, 73)'}} message = "Sorry, the password is not correct" placeholder = "* * * * * * * *"></Input>
 
 				<div className="">
 					Forgot your password?
-					<span className="link"> Restore </span>
+					<Link to="/recovery"> Restore</Link>
 				</div>
 				<Button className="button button--primary unavailable">Continue</Button>
 			

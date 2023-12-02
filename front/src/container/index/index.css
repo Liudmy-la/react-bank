@@ -21,11 +21,29 @@
 	background-size: contain;
 
 	position: absolute;
-	bottom: 25%; /* відступ від нижнього краю */
+	bottom: 25%;
 	left: 5%;
 	width: 90%;
 	aspect-ratio: 1 / 1; 
 	opacity: 0.9;	
 	
 	z-index: -1;
-  }
+}
+
+.hello__block {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	padding-top: 30%;
+	gap: 20px;
+	color: rgb(255, 255, 254);
+}
+
+.hello__title {
+	font-size: 42px;
+}
+
+.hello__text {
+	font-size: 20px;
+}
+
