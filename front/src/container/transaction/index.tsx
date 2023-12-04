@@ -8,13 +8,14 @@ import Divider from "../../component/divider";
 
 interface ChildProps {
 	children: React.ReactNode;
+	transactionId: any;
 }
   
-export default function Component({children}: ChildProps):React.ReactElement {
+export default function Component({children, transactionId}: ChildProps):React.ReactElement {
 	  return (
 		<Page className="actions" style = {{}}>
 			<Column className="column--20" style = {{}}>  						
-				<Opthead backTo="balance" className="" style = {{}} title={`Transaction: ${children}`}></Opthead>
+				<Opthead  backTo="/balance" className="" style = {{}} title={`Transaction: ${transactionId}`}></Opthead>
 
 				<div className="amount-title">$100.20</div>
 

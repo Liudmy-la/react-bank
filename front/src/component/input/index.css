@@ -10,6 +10,11 @@
 	width: 100%;
 }
 
+.input--warn {
+	border-color: rgb(217, 43, 73);
+	color: rgb(217, 43, 73);
+}
+
 .message {
 	font-weight: 500;
 }
@@ -24,7 +29,7 @@
 	color: rgb(28, 13, 0);
 }
 
-.appear {
+/* .appear {
 	width: 24px;
 	height: 24px;
 	background-image: url("../../../public/svg/icon-appear.svg");
@@ -46,4 +51,4 @@
 	position: absolute;
 	top: 16px;
   	right: 16px;
-}
+} */

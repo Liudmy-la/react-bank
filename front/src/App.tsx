@@ -33,13 +33,14 @@ const PrivateRoute: React.FC<{children: React.ReactNode}> = ({
 };
 
 const Transaction: React.FC = () => {
+	
 	const {transactionId} = useParams();
 
 	// React.useEffect(() => {
 	// 	alert(`Дані щодо Transaction ID: ${transactionId}`);
 	// }, [transactionId]);
 
-	return <TransactionPage children={transactionId} />
+	return <TransactionPage children transactionId={transactionId} />
 }
 
 function App() {

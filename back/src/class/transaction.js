@@ -9,7 +9,7 @@ class Transaction {
 		this.source = String(source);
 
 		this.initialBalance = Transaction.balance;
-		this.id = Transaction.#count++;
+		this.transactionId = Transaction.#count++;
 		this.date = new Date().getTime();
 	};
 
@@ -34,9 +34,9 @@ class Transaction {
 
 	};
 
-	static getById (id) {
+	static getById (transactionId) {
 		return (
-			this.#list.find((item) => item.id === Number(id))
+			this.#list.find((item) => item.transactionId === Number(transactionId))
 			 || null
 		)
 	}

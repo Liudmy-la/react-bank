@@ -8,7 +8,7 @@ interface ChildProps {
 
 export default function Component({backTo}:ChildProps):React.ReactElement {
 	return (
-		<Link to={`/${backTo}`}>
+		<Link to={backTo}>
 			<div className="back"></div>
 		</Link>
 		

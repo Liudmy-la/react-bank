@@ -8,19 +8,19 @@ const { Session } = require('../class/session');
 
 User.create({
 	email: 'gooduser1@mail.com',
-	password: mhvjbA45,
+	password: 'mhvjbA45',
   })
   
   User.create({
 	email: 'gooduser2@mail.com',
-	password: mhvjbA44,
+	password: 'mhvjbA44',
   })
 
 //=================================================
 
-router.get('/signin', function (req, res) {	
-	res.status(200).json(`Signin !!`)
-  })
+// router.get('/signin', function (req, res) {	
+// 	res.status(200).json(`Signin !!`)
+//   })
 
 //=================================================
 
@@ -36,7 +36,7 @@ router.get('/signup', function (req, res) {
 		],
 	
 		title: 'Signup Page',
-		data: "",
+		
 	  });
   });
 

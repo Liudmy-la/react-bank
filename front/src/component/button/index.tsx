@@ -5,11 +5,16 @@ interface ChildProps {
 	children: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;	
-	onClick?: any;
+	onClick?: () => void;
 	type?: any;
 }
 
-export default function Component({children, className = "", style = {}, onClick}:ChildProps):React.ReactElement {
+export default function Component({
+	children, 
+	className = "", 
+	style = {}, 
+	onClick
+}:ChildProps):React.ReactElement {
 	return (		
 		<div 
 			className={className}

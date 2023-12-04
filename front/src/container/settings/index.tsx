@@ -20,27 +20,31 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	}
 
 	  return (
-		<Page className="" style = {{}}>			
-			<Column className="column--20" style = {{}}>  						
-				<Opthead backTo="balance" className="" style = {{}} title="Settings"></Opthead>
+		<Page>			
+			<Column className="column--20">  						
+				<Opthead  backTo="/balance" title="Settings"></Opthead>
 
-				<Column className="column--12">
-					<div className="subtitle">Change email</div>
-					<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
-					<Input label = "Password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
+				<form>
+					<Column className="column--12">
+						<div className="subtitle">Change email</div>
+						 <Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
+						 <Input label = "Password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
 
-					<Button className="button button--primary button--outline">Save Email</Button>
-				</Column>
+						<Button className="button button--primary button--outline">Save Email</Button>
+					</Column>
+				</form>
 
 				<Divider/>
 
-				<Column className="column--12">
-					<div className="subtitle">Change password</div>
-					<Input label = "Old Password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
-					<Input label = "New password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
-					
-					<Button className="button button--primary button--outline">Save Password</Button>
-				</Column>
+				<form>
+					<Column className="column--12">
+						<div className="subtitle">Change password</div>
+						 <Input label = "Old Password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
+						 <Input label = "New password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
+						
+						<Button className="button button--primary button--outline">Save Password</Button>
+					</Column>
+				</form>
 
 				<Divider/>
 				

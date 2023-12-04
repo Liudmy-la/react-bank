@@ -16,16 +16,20 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
 		<Page>			
 			<Column className="column--20">  						
-				<Heading backTo=""  title="Sign in" comment="Select login method"></Heading>
+				<Heading  backTo="/"  title="Sign in" comment="Select login method"></Heading>
 
-				<Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
-				<Input label = "Password" className="appear" style = {{borderColor: 'rgb(217, 43, 73)', color: 'rgb(217, 43, 73)'}} message = "Sorry, the password is not correct" placeholder = "* * * * * * * *"></Input>
+				<form>
+					<Column className="column--20"> 
+						 <Input label = "Email" message = "" placeholder = "example@mail.com"></Input>
+						 <Input label = "Password" className="appear" message = "" placeholder = "* * * * * * * *"></Input>
 
-				<div className="">
-					Forgot your password?
-					<Link to="/recovery"> Restore</Link>
-				</div>
-				<Button className="button button--primary unavailable">Continue</Button>
+						<div className="">
+							Forgot your password?
+							<Link to="/recovery"> Restore</Link>
+						</div>
+						<Button className="button button--primary">Continue</Button>
+					</Column>
+				</form>
 			
 			</Column>
 		</Page>

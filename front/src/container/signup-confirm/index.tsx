@@ -13,13 +13,16 @@ interface ChildProps {
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	  return (
-		<Page className="" style = {{}}>			
-			<Column className="column--20" style = {{}}>  						
-				<Heading backTo="signup"  style = {{}} title="Confirm account" comment="Write the code you received"></Heading>
+		<Page>			
+			<Column className="column--20">  						
+				<Heading  backTo="/signup" title="Confirm account" comment="Write the code you received"></Heading>
 
-				<Input label = "Code" message = "" placeholder = "Enter the received code"></Input>
-
-				<Button className="button button--primary">Confirm</Button>				
+				<form>
+					<Column className="column--20"> 
+						 <Input label = "Code" message = "" placeholder = "Enter the received code"></Input>
+						<Button className="button button--primary">Confirm</Button>		
+					</Column>
+				</form>		
 			</Column>
 		</Page>
 	  )
