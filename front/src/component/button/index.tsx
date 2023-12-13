@@ -11,17 +11,19 @@ interface ChildProps {
 
 export default function Component({
 	children, 
-	className = "", 
+	className, 
 	style = {}, 
-	onClick
+	onClick,
+	type
 }:ChildProps):React.ReactElement {
 	return (		
-		<div 
+		<button
+			type={type}
 			className={className}
 			style={{...style}}
 			onClick={onClick}
 		>
 			{children}
-		</div>		
+		</button>		
 	) 
 }

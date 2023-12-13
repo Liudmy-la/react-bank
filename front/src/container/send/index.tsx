@@ -1,6 +1,6 @@
 import "./index.css";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import Page from "../../component/page";
 import Column from "../../component/column";
@@ -9,96 +9,73 @@ import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 
 interface ChildProps {
-	children: React.ReactNode;
-	onCreate?: any;
-	placeholder?: any;
-	button?: any;
-	transactionId?: any;
-	value?: any;
-	type?:any;
-	amount?:any;
-	recipient?:any;
+	children?: React.ReactNode;
 }
   
-export default function Component({
-	children, 
-	onCreate, 
-	amount,
-	recipient,
-	transactionId = null
-}: ChildProps):React.ReactElement {
+export default function Component({children}: ChildProps):React.ReactElement {
+
+	const [amount, setAmount] = useState('')	
+	const [source, setSource] = useState('')
 	
-	// const [amount, setAmount] = useState("");
-	// const [recipient, setRecipient] = useState("");
+	const handleSumInput = (e: any) => setAmount(e.target.value)
+	const handleEmailInput = (e:any) => setSource(e.target.value)
+	
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 
-	const convertData = JSON.stringify({
-		amount,
-		recipient,
-		transactionId,
-	});
+		const data = {amount, source, type: "send"};
+		const convertData = JSON.stringify(data);
 
-	const sendData = useCallback(async () => {
 		try {
-			const res = await fetch(`http://localhost:4000/transaction${transactionId}`, {
+			const res = await fetch('http://localhost:4000/send', {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: convertData,
-			});
+			})
 
-			const data = await res.json();
+			await res.json()
 
-			if (res.ok) {
-				if (onCreate) onCreate();				
-				return data;
-
-				} else {
-					console.error('Error:', data.message);
-       				throw new Error(data.message);
-				}
-
-		} catch (error: any) {
-			console.error('Fetch Error:', error.message);
-      		throw new Error('Failed to send data.');
+			if (res.ok) {		
+				window.location.assign("/transaction:{{transactionId}}")
+			}
+			
+		} catch(err: any) {
+			console.error(err.message)
 		}
-	}, [convertData, onCreate, transactionId]);
-
-
-	const handleSubmit = useCallback(() => {
-		if (amount.length === 0 || recipient.length === 0) return null;
-		return sendData();
-	}, [sendData, amount, recipient])
-
+	}
+	
 	return (
 		<Page>			
 			<Column className="column--20">  			
 				<Opthead  backTo="/balance" title="Send"></Opthead>			
-				<form>
+				
+				<form method="POST" onSubmit={handleSubmit}>
 					<Column className="column--20"> 
 						 <Input 
-						 	label="Email" 
+						 	onInput={handleEmailInput}
+						 	label="Email"
 							message="" 
 							placeholder="Enter the recipient's email" 
 							type="email" 
-							value={recipient}
-							// action={setRecipient}
+							value={source}
 						></Input>
-						 <Input 
+						 <Input
+						 	onInput={handleSumInput}
 						 	label="Sum" 
 							message="" 
 							placeholder="Enter amount" 
 							type="text" 
 							value={amount}
-							// action={setAmount}
 						></Input>
 
 						<Button 
-							onClick={() => handleSubmit()} 
+							type="submit"
 							className="button button--primary"
-						>Send</Button>
-					{/* {newTransaction ? <Location to={`/transaction/${newTransaction.transactionId}`} /> : <Infofield error />}		 */}
-
+						>
+							Send
+						</Button>
 					</Column>
 				</form>
 			</Column>

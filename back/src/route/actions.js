@@ -4,33 +4,38 @@ const router = express.Router()
 
 const { Transaction } = require('../class/transaction');
 
+
 //=================================================
 
 router.get('/balance', function (req, res) {	
-	res.status(200).json(`For you *__* `)
+	res.status(200).json(`For you *-* `)
   })
 
 //=================================================
 
-router.post('/transaction/:transactionId', function (req, res) {
+router.post('/send', function (req, res) {
 	try {
-		const {amount, recipient, transactionId} = req.body
+		const {amount, source, type} = req.body
 
-		if (!amount || !recipient) {
-			return res.status(400).json({
-				message: `Fill in all fields!`,
-			})
-		}
+		console.log(Number(amount))
+		console.log(source)
+		console.log(type)
 
-		const newTransaction = Transaction.create(amount, recipient, transactionId, date)
+		// if (!amount || !recipient) {
+		// 	return res.status(400).json({
+		// 		message: `Fill in all fields!`,
+		// 	})
+		// }
+
+		const newTransaction = Transaction.create({amount, source, type});
+		  
+		console.log(newTransaction);
 
 		return res.status(200).json({
-			transaction: {
+				date: newTransaction.date,
 				transactionId: newTransaction.transactionId,
 				amount: newTransaction.amount,
-				recipient: newTransaction.recipient,
-				date: newTransaction.date,
-			}
+				recipient: newTransaction.source,			
 		})
 
 	} catch (e) {

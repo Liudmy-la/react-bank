@@ -6,7 +6,7 @@ class User {
 		this.email = String(email).toLowerCase();
 		this.password = String(password);
 
-		this.id = User.#count++;
+		this.userId = User.#count++;
 	};
 
 	static create(data) {
@@ -24,15 +24,15 @@ class User {
 		)
 	};
 
-	static getById(id) {
+	static getById(userId) {
 		return (
-			this.#list.find((user) => user.id === Number(id))
+			this.#list.find((user) => user.userId === Number(userId))
 			|| null
 		)
 	};
 
-	static update(id, newData) {
-		const user = this.getById(id);
+	static update(userId, newData) {
+		const user = this.getById(userId);
 	
 		if (user) {
 			if (newData.email) {

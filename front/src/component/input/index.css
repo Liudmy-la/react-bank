@@ -12,11 +12,11 @@
 
 .input--warn {
 	border-color: rgb(217, 43, 73);
-	color: rgb(217, 43, 73);
 }
 
 .message {
 	font-weight: 500;
+	color: rgb(217, 43, 73);
 }
 
 .disabled {
@@ -40,8 +40,9 @@
 	top: 16px;
   	right: 16px;
 }
+ */
 
-.disappear {
+/* .disappear {
 	width: 24px;
 	height: 24px;
 	background-image: url("../../../public/svg/icon-disappear.svg");
@@ -51,4 +52,5 @@
 	position: absolute;
 	top: 16px;
   	right: 16px;
+
 } */

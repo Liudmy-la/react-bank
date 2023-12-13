@@ -154,7 +154,7 @@ function App() {
 				/>
 	   	   
 				<Route
-					path="/transaction/transactionId"
+					path="/transaction:{{transactionId}}"
 					element={
 						<PrivateRoute>
 							<Transaction />

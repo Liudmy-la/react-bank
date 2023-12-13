@@ -10,3 +10,4 @@ export const getDate = (time) => {
 
 	return formattedDate;
 } 
+

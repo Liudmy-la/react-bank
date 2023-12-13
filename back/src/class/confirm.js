@@ -38,5 +38,3 @@ class Confirm {
 }
   
 module.exports = { Confirm };
-  
-console.log('Confirm ', Confirm.generateCode());
