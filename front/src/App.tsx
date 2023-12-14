@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+
 import WellcomePage from "./container/index";
 import SignupPage from "./container/signup";
 import SigninPage from "./container/signin";
@@ -13,6 +14,9 @@ import NotificationsPage from "./container/notification";
 import TransactionPage from "./container/transaction";
 import BalancePage from "./container/balance";
 import Error from "./container/error";
+
+import { loadSession } from "./util/session";
+loadSession();
 
 
 type ContextType = {

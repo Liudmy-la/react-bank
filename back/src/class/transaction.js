@@ -14,7 +14,7 @@ const getDate = (time) => {
 class Transaction {
 	static #list = [];
 	static #count = 1;
-	balance = 12000;
+	static balance = 12000;
 
 	constructor(type, amount, source) {
 		this.type = String(type).toLowerCase();

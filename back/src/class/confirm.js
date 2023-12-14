@@ -35,6 +35,8 @@ class Confirm {
   
 		return obj ? obj.data : null;
 	};
+
+	static getList = () => this.#list;
 }
   
 module.exports = { Confirm };

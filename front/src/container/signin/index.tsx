@@ -8,6 +8,7 @@ import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
+import { saveSession } from "../../util/session";
 
 interface ChildProps {
 	children: React.ReactNode;
@@ -20,22 +21,32 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	const handleMailInput = (e: any) => setEmail(e.target.value)
 	const handlePassInput = (e:any) => setPassword(e.target.value)
 	
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const data = {email, password};
-		const convertData = JSON.stringify(data);
+		const convertData = () => {
+			return JSON.stringify({email, password})
+		}
 
-				fetch('http://localhost:4000/signin', {
+		try {
+			const res = await fetch('http://localhost:4000/signin', {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: convertData,
+					body: convertData(),
 				})
-				.then((res) => res.json())
-				.catch((err) => console.error(err.message))
+				
+			const data = await res.json()
+
+			if (res.ok) {		
+				saveSession(data.session)		
+				window.location.assign("/balance")
+			}
+		} catch(err: any) {
+				console.error(err.message)
 		}
+	}
 
 	  return (
 		<Page>			

@@ -4,12 +4,30 @@ const router = express.Router()
 
 const { Transaction } = require('../class/transaction');
 
+const { User } = require('../class/user');
 
 //=================================================
 
-router.get('/balance', function (req, res) {	
-	res.status(200).json(`For you *-* `)
-  })
+router.get('/balance', function (req, res) {
+	const data = {
+		balance: '25000',
+		list: [],
+		notifications: '4',
+	}
+	
+	res.json(data);
+});
+	// return res.render('balance', {
+	// 	name: 'balance',
+	// 	component: [
+	// 		'page',
+	// 		'column',
+	// 		'list-item',
+	// 	],
+	
+	// 	title: 'Main Wallet Page',
+	//   });
+  
 
 //=================================================
 

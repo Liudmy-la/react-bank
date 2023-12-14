@@ -7,7 +7,7 @@ class Session {
 		this.user = {
 			email: user.email,
 			isConfirm: user.isConfirm,
-			id: user.id,
+			userId: user.userId,
 		}
 	};
 

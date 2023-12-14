@@ -6,6 +6,7 @@ class User {
 		this.email = String(email).toLowerCase();
 		this.password = String(password);
 
+		this.isConfirm = false;
 		this.userId = User.#count++;
 	};
 
