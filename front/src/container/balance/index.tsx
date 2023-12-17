@@ -12,7 +12,7 @@ interface ChildProps {
 }
 
 interface Data {
-	balance: number; 
+	balance: number | string; 
 	list: any[]; 
 	notifications: string;
   }
@@ -25,12 +25,17 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 	const [data, setData] = useState<Data | null>(null)
 
-	useEffect (() => {
-		fetch ('/balance', {method: 'GET'})
-			.then((response) => response.json())
-			.then((json) => setData(json as Data))
-			.catch((error) => console.error('Error fetching data:', error));
-	}, [])
+	useEffect(() => {
+		fetch('/balance', { method: 'GET' })
+		  .then((response) => {
+			if (!response.ok) {
+			  throw new Error('Network response was not ok');
+			}
+			return response.json();
+		  })
+		  .then((json) => setData(json))
+		  .catch((error) => console.error('Error fetching data:', error));
+	  }, []);
 
 	return (
 		<Page className="">
@@ -41,7 +46,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 					</Link>
 					<div className="wallet">Main wallet</div>
 					<Link to="/notifications">
-						<div className='icon-button nott'></div>
+						<div className='icon-button nott'>{data ? `+${data.notifications}` : '+1'}</div>
 					</Link>
 				</div>
 

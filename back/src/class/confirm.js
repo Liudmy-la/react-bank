@@ -36,6 +36,14 @@ class Confirm {
 		return obj ? obj.data : null;
 	};
 
+	static getCode = (data) => {
+		const obj = this.#list.find(
+			(item) => item.data === data,
+		);
+  
+		return obj ? obj.code : null;
+	};
+
 	static getList = () => this.#list;
 }
   

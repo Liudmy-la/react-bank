@@ -13,9 +13,10 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
+	type Data = number | string | null
 
-	const [amount, setAmount] = useState('')	
-	const [source, setSource] = useState('')
+	const [amount, setAmount] = useState<Data>('')	
+	const [source, setSource] = useState<Data>('')
 	
 	const handleSumInput = (e: any) => setAmount(e.target.value)
 	const handleEmailInput = (e:any) => setSource(e.target.value)

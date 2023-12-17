@@ -8,7 +8,7 @@ interface ChildProps {
 	label?: string;
 	message?: string;
 	placeholder?: string;
-	value?: string;
+	value?: any;
 	onInput?: any;
 }
 

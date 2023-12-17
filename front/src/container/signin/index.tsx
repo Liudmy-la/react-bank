@@ -8,7 +8,9 @@ import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
+
 import { saveSession } from "../../util/session";
+import {FIELD_ERROR} from '../../util/form';
 
 interface ChildProps {
 	children: React.ReactNode;
@@ -17,9 +19,32 @@ interface ChildProps {
 export default function Component({children}: ChildProps):React.ReactElement {
 	const [email, setEmail] = useState('')	
 	const [password, setPassword] = useState('')
+	const [messageE, setMessageE] = useState('')
+	const [messageP, setMessageP] = useState('')
+
+	const validate = (value: string) => {
+		if (String(value).length < 1) {
+			return FIELD_ERROR.IS_EMPTY
+		}
+	}
 	
-	const handleMailInput = (e: any) => setEmail(e.target.value)
-	const handlePassInput = (e:any) => setPassword(e.target.value)
+	const handleMailInput = (e: any) => { 
+		if (!!validate(e.target.value)) {
+			e.target.message = setMessageE(validate(e.target.value) || '')
+			e.target.style.borderColor ='rgb(217, 43, 73)'
+		}
+
+		setEmail(e.target.value)
+	}
+
+	const handlePassInput = (e:any) => {
+		if (!!validate(e.target.value)) {
+			e.target.message = setMessageP(validate(e.target.value) || '')
+			e.target.style.borderColor ='rgb(217, 43, 73)'
+		}
+
+		setPassword(e.target.value)
+	}
 	
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -35,14 +60,21 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						"Content-Type": "application/json",
 					},
 					body: convertData(),
-				})
+				});
 				
 			const data = await res.json()
-
-			if (res.ok) {		
-				saveSession(data.session)		
-				window.location.assign("/balance")
+			if (!res.ok && data.field === 'email') {
+				setMessageE(data.message); 
+				return;
+			} else if (!res.ok && data.field === 'password') {
+				setMessageP(data.message); 
+				return;
+			} else if (res.ok) {
+				saveSession(data.session);
+				window.location.assign("/balance");
 			}
+		
+			
 		} catch(err: any) {
 				console.error(err.message)
 		}
@@ -58,7 +90,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						<Input
 							onInput={handleMailInput}
 						 	label="Email"
-							message=""
+							message={messageE}
 							placeholder="Enter Your Email"
 							type="email" 
 							value={email}
@@ -67,7 +99,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							onInput={handlePassInput}
 							label="Password"
 							className="appear"
-							message=""
+							message={messageP}
 							placeholder="Enter Your Password"
 							type="password" 
 							value={password}

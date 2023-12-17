@@ -42,7 +42,7 @@ router.post('/signup', function (req, res) {
 
 	if (!email || !password) {
 		return res.status(400).json({
-			message: `Fill in the required fields!`,
+			message: `Fill in the required fields!`,	
 		})
 	}
 
@@ -53,7 +53,8 @@ router.post('/signup', function (req, res) {
 
 		if (user) {
 			return res.status(400).json({
-				message: `User with this email already exists!`,
+				message: `User with this email already exists!`,				
+				field: 'email',
 			})
 		}
 
@@ -64,7 +65,7 @@ router.post('/signup', function (req, res) {
 		console.log('Current Session ', session.token);
 
 			Confirm.create(newUser.email);
-			console.log('Confirm with this code: ', Confirm.getList().reverse()[0].code);
+			console.log('Confirm with this code: ', Confirm.getCode(newUser.email));
 
 		return res.status(200).json({
 			message: `User has been successfully created!`,
@@ -72,7 +73,7 @@ router.post('/signup', function (req, res) {
 		  })
 		} catch (err) {
 		  return res.status(400).json({
-			message: `Error! Wrong confirmation code.`,
+			message: err.message,
 		  })
 		}
 	  })
@@ -101,7 +102,8 @@ router.post('/signup-confirm', function (req, res) {
 
 	if (!code) {
 		return res.status(400).json({
-			message: `Enter your code!`,
+			message: `Enter your code!`,				
+			field: 'code',
 		})
 	}
 
@@ -109,20 +111,25 @@ router.post('/signup-confirm', function (req, res) {
 		const session = Session.get(token)  ;
 		if (!session) {
 			return res.status(400).json({
-				message: `Come back and Log in!`
+				message: `Come back and Sign In!`,				
+				field: 'data',
 			})
 		}
 
-		const email = Confirm.getList().reverse()[0].data
+		const email = Confirm.getData(Number(code));
+		console.log(`Code for email: `, email)
+
 		if (!email) {
 			return res.status(400).json({
-				message: `This code is wrong!`
+				message: `This code is wrong!`,				
+				field: 'code',
 			})
 		}
 
 		if (email !== session.user.email) {
 			return res.status(400).json({
-				message: `Ask new code for confirmation!`
+				message: `This code is wrong! `,				
+				field: 'email',
 			})
 		}
 
@@ -168,27 +175,30 @@ router.post('/signin', function (req, res) {
 
 	if (!email || !password) {
 		return res.status(400).json({
-			message: `Fill in the required fields!`,
+			message: `Fill in all required fields!`,	
 		})
 	}
 
 	try {
 		const user = User.getByEmail(email)
+		console.log('Hi there, ', user.email)
 
 		if (!user) {
 			return res.status(400).json({
-				message: `This user hasn't an account!`
+				message: `This user hasn't an account!`,				
+				field: 'email',
 			})
 		}
 		
 		if (user.password !== password) {
 			return res.status(400).json({
-				message: `This password is wrong!`
+				message: `This password is wrong!`,		
+				field: 'password',
 			})
-		}
+		} 
 
-		const session = Session.create(user)  ;
-		console.log('Current Session ', session.token, session.email);
+		const session = Session.create(user);
+		console.log('Current Session ', session);
 
 		
 		return res.status(200).json({
@@ -198,13 +208,94 @@ router.post('/signin', function (req, res) {
 			
 		} catch (err) {
 		  return res.status(400).json({
-			message: err.message,
+			message: `This user hasn't an account!`,				
+			field: 'email',
 		  })
 		}
 	  })
 
 
 //=================================================
+
+router.post('/recovery', function (req, res) {	
+	const { email } = req.body
+
+	if (!email) {
+		return res.status(400).json({
+			message: `Enter your email!`,
+			field: 'email',
+		})
+	}
+
+	try {
+		const user = User.getByEmail(email)
+		console.log(user)
+
+		if (!user) {
+			return res.status(400).json({
+				message: `User with this email doesn't exist. 
+							Come back and Sign Up!`,
+				field: 'email',
+			})
+		}
+
+		Confirm.create(user.email);
+		console.log('Recover with this code: ', Confirm.getCode(user.email));
+		
+		return res.status(200).json({
+			message: `Check your email to find the code!`,
+			})
+			
+	} catch (err) {
+		return res.status(400).json({
+			message: err.message,
+		})
+	}
+})
+
+//=================================================
+router.post('/recovery-confirm', function (req, res) {	
+	const { code, password } = req.body
+
+	if (!code) {
+		return res.status(400).json({
+			message: `Enter your code!`,
+		})
+	}
+
+	try {
+		const email = Confirm.getData(Number(code));
+		console.log(`Code for email: `, email)
+
+		if (!email) {
+			return res.status(400).json({
+				message: `This code is wrong!`,				
+				field: 'code',
+			})
+		}
+
+		const user = User.getByEmail(email);
+
+		console.log(`Initial: `, user);
+		console.log(`NEW: `, password);
+
+		User.updatePass(email, password);
+
+		const updUser = User.getByEmail(email);
+		console.log(`Updated: `, updUser);
+		
+		return res.status(200).json({
+			message: `Sign In with NEW data!`,
+		})
+			
+	} catch (err) {
+		return res.status(400).json({
+			message: err.message,
+		})
+	}
+})
+//=================================================
+
 
 //=================================================
 

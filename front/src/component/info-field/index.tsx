@@ -2,7 +2,7 @@ import React from 'react';
 import "./index.css";
 
 interface ChildProps {
-	children: React.ReactNode;
+	children: any;
 	className?: string;
 	style?: React.CSSProperties;
 }

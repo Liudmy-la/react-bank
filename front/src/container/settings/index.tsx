@@ -7,19 +7,14 @@ import Button from "../../component/button";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 import Divider from "../../component/divider";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface ChildProps {
 	children: React.ReactNode;
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const navigate = useNavigate();
-	const onClick = () => {
-		navigate("/");
-	}
-
-	  return (
+	return (
 		<Page>			
 			<Column className="column--20">  						
 				<Opthead  backTo="/balance" title="Settings"></Opthead>
@@ -48,7 +43,15 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 				<Divider/>
 				
-				<Button onClick={onClick} className="button button--primary button--outline button--alarm">Log out</Button>
+				<Button 
+					onClick={() => {
+						window.sessionStorage.clear();
+						window.location.href = '/';
+					  }}
+					className="button button--primary button--outline button--alarm"
+				>
+					Log out
+				</Button>
 				
 			</Column>
 		</Page>

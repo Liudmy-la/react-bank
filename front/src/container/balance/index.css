@@ -32,6 +32,13 @@
 
 .nott {
 	background-image: url('../../../public/svg/icon-notification.svg');
+	width: 40px;
+	background-position: left;
+
+	color: rgb(255, 255, 254);
+	font-weight: 500;
+	font-size: 12px;
+	text-align: right;
 }
 
 .button--main {

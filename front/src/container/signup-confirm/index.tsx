@@ -53,10 +53,14 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 			const data = await res.json()
 
-			if (res.ok) {		
-				saveSession(data.session)		
-				window.location.assign("/balance")
+			if (!res.ok && data.field) {
+				setMessage(data.message); 
+				return;
 			}
+
+			saveSession(data.session)		
+			window.location.assign("/balance")
+
 		} catch(err: any) {
 			console.error(err.message)
 		}

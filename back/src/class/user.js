@@ -32,22 +32,24 @@ class User {
 		)
 	};
 
-	static update(userId, newData) {
-		const user = this.getById(userId);
+	// static updateEmail (incData, email) {
+	// 	const user = User.getByEmail(incData);
 	
-		if (user) {
-			if (newData.email) {
-				user.email = String(newData.email).toLowerCase();
-			}
+	// 	if (user && email) {
+	// 			user.email = String(newData.email).toLowerCase();
+	// 		}
+	// 		return true;
+	// 	}
 	
-			if (newData.password) {
-				user.password = String(newData.password);
-			}
+	// 	return false;
+	// };
+
+	static updatePass (email, password) {
+		const user = User.getByEmail(email);
 	
-			return user;
-		}
-	
-		return null;
+		if (user && password) user.password = String(password);
+			
+		return false;
 	};
 
 	static getList = () => this.#list;

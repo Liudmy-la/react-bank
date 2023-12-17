@@ -8,7 +8,7 @@ import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
-import Infofield from "../../component/info-field";
+// import Infofield from "../../component/info-field";
 
 import {
 	REG_EXP_EMAIL,
@@ -83,11 +83,14 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 			})
 
 			const data = await res.json()
-
-			if (res.ok) {		
-				saveSession(data.session)		
-				window.location.assign("/signup-confirm")
+			if (!res.ok && data.field) {
+				setMessageE(data.message); 
+				return;
 			}
+		
+			saveSession(data.session)		
+			window.location.assign("/signup-confirm")
+			
 		} catch(err: any) {
 			console.error(err.message)
 		}
@@ -130,9 +133,9 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 							Continue
 						</Button>
 
-						<Infofield className="infofield field--warn disabled">
+						{/* <Infofield className="infofield field--warn disabled">
 							A user with the same name is already exist
-						</Infofield>
+						</Infofield> */}
 					</Column>
 				</form>
 			</Column>
