@@ -49,8 +49,6 @@ router.post('/signup', function (req, res) {
 	try {
 		const user = User.getByEmail(email)
 
-		console.log(user)
-
 		if (user) {
 			return res.status(400).json({
 				message: `User with this email already exists!`,				

@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Page from "../../component/page";
 import Column from "../../component/column";
 import Listitem from "../../component/list-item";
+import Infofield from "../../component/info-field";
 
 interface ChildProps {
 	children?: React.ReactNode;
@@ -13,28 +14,34 @@ interface ChildProps {
 
 interface Data {
 	balance: number | string; 
-	list: any[]; 
+	list: any[] | null[]; 
 	notifications: string;
   }
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	const navigate = useNavigate();
 	const handleClick = () => {
-		navigate(`/transaction:{{transactionId}}`);
+		navigate(`/transaction`);
 	}
-
-	const [data, setData] = useState<Data | null>(null)
+	
+	const [data, setData] = useState<Data | null>(null);
+	// const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		fetch('/balance', { method: 'GET' })
-		  .then((response) => {
-			if (!response.ok) {
-			  throw new Error('Network response was not ok');
+		const fetchData = async () => {
+		  try {
+			const res = await fetch('http://localhost:4000/balance');
+			if (!res.ok) {
+			  throw new Error(`HTTP error! Status: ${res}`);
 			}
-			return response.json();
-		  })
-		  .then((json) => setData(json))
-		  .catch((error) => console.error('Error fetching data:', error));
+			const jsonData = await res.json();
+			setData(jsonData);
+		  } catch (error) {			
+			// setError('Error fetching data from the server.');
+		  }
+		};
+	
+		fetchData();
 	  }, []);
 
 	return (
@@ -46,12 +53,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 					</Link>
 					<div className="wallet">Main wallet</div>
 					<Link to="/notifications">
-						<div className='icon-button nott'>{data ? `+${data.notifications}` : '+1'}</div>
+						<div className='icon-button nott'>{`+${data?.notifications}` || ' 0'}</div>
 					</Link>
 				</div>
 
 				<div className="amount-title--white">
-				{data ? data.balance : 'Calculating ...'}
+				{`$ ${data?.balance}` || 'Calculating ...'}
 				</div>
 
 				<div className="actions__block">
@@ -64,9 +71,21 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				</div>
 				
 				<Column className="column--1">
-					<Listitem onClick={handleClick} className = "stripe" itemtitle = 'Stripe' info='200' details='12:20'></Listitem>
-					<Listitem onClick={handleClick} className = "owner" itemtitle = 'Oleg V.' info='300' details='12:50'></Listitem>
-					<Listitem onClick={handleClick} className = "coinbase" itemtitle = 'Coinbase' info='400' details='05:15'></Listitem>
+
+					{data?.list.length !== 0
+						? data?.list.map((trans) => (
+							<Listitem
+								key={trans.id}
+								onClick={handleClick}
+								className={trans.type === 'send' ? `owner ${trans.source}` : trans.source}
+								itemtitle={trans.source.toUpperCase()}
+								info={trans.type === 'send' ? `- $ ${trans.amount}` : `+ $ ${trans.amount}`}
+								details={trans.date}
+							></Listitem>
+						))
+						: <Infofield> You have no completed transactions yet.</Infofield>
+					}
+					
 				</Column>	
 				
 			</Column>				

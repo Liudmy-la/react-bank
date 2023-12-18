@@ -10,7 +10,7 @@ interface ChildProps {
 export default function Component({children, className = "", style = {}}:ChildProps):React.ReactElement {
 	return (
 		<div 
-			className={className} 
+			className={`infofield ${className}`} 
 			style={{...style}}
 		>
 			<span className = "warn__icon"></span>

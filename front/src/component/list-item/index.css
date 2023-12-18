@@ -88,11 +88,11 @@
 
 .stripe + .inner__block .details::after , 
 .coinbase + .inner__block .details::after {
-	content: " / Receipt";
+	content: " / Received";
 }
 
 .owner + .inner__block .details::after {
-	content: " / Sending";
+	content: " / Sent";
 }
 
 .owner + .inner__block .info {

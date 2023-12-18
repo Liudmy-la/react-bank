@@ -3,16 +3,25 @@ import "./index.css";
 
 interface ChildProps {
 	onClick?: () => void;
-	className?: string;
+	className?: any;
 	style?: React.CSSProperties;
 	itemtitle: string;
 	details?: string;
 	info?: any;
+	key?: any;
 }
 
-export default function Component({className = "", style = {}, itemtitle = '', info, details, onClick}:ChildProps):React.ReactElement {
+export default function Component({
+	key,
+	className = "", 
+	style = {}, 
+	itemtitle = '', 
+	info, 
+	details, 
+	onClick
+}:ChildProps):React.ReactElement {
 	return (		
-		<div className="info__block" onClick={onClick}>			
+		<div key={key} className="info__block" onClick={onClick}>			
 			<div className={`icon ${className}`}></div>
 			<div className="inner__block">
 				<div className="title__block">

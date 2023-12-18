@@ -36,10 +36,10 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				body: convertData,
 			})
 
-			await res.json()
+			const data = await res.json()
 
 			if (res.ok) {		
-				window.location.assign("/transaction:{{transactionId}}")
+				window.location.assign(`/transaction?${data.newTransaction.transactionId}`);
 			}
 			
 		} catch(err: any) {

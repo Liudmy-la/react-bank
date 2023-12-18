@@ -14,35 +14,35 @@ const getDate = (time) => {
 class Transaction {
 	static #list = [];
 	static #count = 1;
-	static balance = 12000;
+	static #balance = 12000;
 
-	constructor(type, amount, source) {
+	constructor({type, amount, source}) {
 		this.type = String(type).toLowerCase();
 		this.amount = Number(amount);
 		this.source = String(source).toLowerCase();
 
-		this.initialBalance = Transaction.balance;
 		this.transactionId = Transaction.#count++;
 		this.date = getDate(new Date().getTime());
-	};
+
+		if (this.type === 'send' && this.amount < Transaction.#balance) {
+				Transaction.#balance -= this.amount;
+			} else if (this.type === 'receive') {
+				Transaction.#balance += this.amount;
+			}
+	  
+		// this.updatedBalance = Transaction.#balance;
+		};
 
 	
 
 	static create (data) {		
-		let newTransaction = new Transaction(data);
-
-		if (data.type === 'send' && data.amount < data.initialBalance) {			
-			Transaction.balance = data.initialBalance - data.amount;
-		} 
-		else if (data.type === 'receive') {
-			Transaction.balance = data.initialBalance + data.amount;
-		}
-
-		if (newTransaction) {			
-			this.#list.push(newTransaction);
-		}
-
+		const newTransaction = new Transaction(data);
+		Transaction.#list.push(newTransaction);
 		return newTransaction;
+	};
+
+	static getBalance = () => {
+		return Transaction.#balance;
 	};
 
 	static getById (transactionId) {
@@ -52,7 +52,15 @@ class Transaction {
 		)
 	}
 
-	static getList = () => this.#list
+	static getList = () => {
+		return Transaction.#list.map((transaction) => ({
+			id: transaction.id,
+			type: transaction.type,
+			amount: transaction.amount,
+			source: transaction.source,
+			date: transaction.date,
+		}));
+	}
 };
 
 module.exports = { Transaction };
