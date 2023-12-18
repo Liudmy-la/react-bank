@@ -1,7 +1,7 @@
 import "./index.css";
 
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Page from "../../component/page";
 import Column from "../../component/column";
@@ -19,25 +19,20 @@ interface Data {
   }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const navigate = useNavigate();
-	const handleClick = () => {
-		navigate(`/transaction`);
-	}
-	
-	const [data, setData] = useState<Data | null>(null);
-	// const [error, setError] = useState<string | null>(null);
+	const [data, setData] = useState<Data | null>(null);	
 
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
 			const res = await fetch('http://localhost:4000/balance');
 			if (!res.ok) {
-			  throw new Error(`HTTP error! Status: ${res}`);
+			  throw new Error(`Error fetching data`);
 			}
-			const jsonData = await res.json();
-			setData(jsonData);
+
+			const data = await res.json();
+			setData(data);
 		  } catch (error) {			
-			// setError('Error fetching data from the server.');
+				console.error('Error fetching data from the server.');
 		  }
 		};
 	
@@ -45,7 +40,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	  }, []);
 
 	return (
-		<Page className="">
+		<Page>
 			<Column className="column--20">  						
 				<div className="head__block">
 					<Link to="/settings">
@@ -76,12 +71,18 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						? data?.list.map((trans) => (
 							<Listitem
 								key={trans.id}
-								onClick={handleClick}
+								onItemClick={
+									async (transactionId: number) => {
+										await fetch(`http://localhost:4000/transaction?id=${trans.id}`);
+										window.location.assign(`/transaction?id=${trans.id}`);
+									}
+								}
 								className={trans.type === 'send' ? `owner ${trans.source}` : trans.source}
 								itemtitle={trans.source.toUpperCase()}
 								info={trans.type === 'send' ? `- $ ${trans.amount}` : `+ $ ${trans.amount}`}
 								details={trans.date}
 							></Listitem>
+							
 						))
 						: <Infofield> You have no completed transactions yet.</Infofield>
 					}

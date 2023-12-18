@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import WellcomePage from "./container/index";
 import SignupPage from "./container/signup";
@@ -35,17 +35,6 @@ const PrivateRoute: React.FC<{children: React.ReactNode}> = ({
 
 	return auth.isLogged ? <>{children}</> : <WellcomePage/>
 };
-
-const Transaction: React.FC = () => {
-	
-	const {transactionId} = useParams();
-
-	// React.useEffect(() => {
-	// 	alert(`Дані щодо Transaction ID: ${transactionId}`);
-	// }, [transactionId]);
-
-	return <TransactionPage children transactionId={transactionId} />
-}
 
 function App() {
 	const [isLogged, login] = React.useState(true);
@@ -161,7 +150,7 @@ function App() {
 					path="/transaction"
 					element={
 						<PrivateRoute>
-							<Transaction />
+							<TransactionPage children/>
 						</PrivateRoute>
 					}
 				/>

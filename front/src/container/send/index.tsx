@@ -8,6 +8,8 @@ import Button from "../../component/button";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 
+import {FIELD_ERROR} from '../../util/form';
+
 interface ChildProps {
 	children?: React.ReactNode;
 }
@@ -17,9 +19,29 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 	const [amount, setAmount] = useState<Data>('')	
 	const [source, setSource] = useState<Data>('')
+	const [message, setMessage] = useState('')
+
+	const validate = (value: string) => {
+		if (String(value).length < 1) {
+			return FIELD_ERROR.IS_EMPTY
+		}
+	}
 	
-	const handleSumInput = (e: any) => setAmount(e.target.value)
-	const handleEmailInput = (e:any) => setSource(e.target.value)
+	const handleSumInput = (e: any) => {
+		if (!!validate(e.target.value)) {
+			e.target.message = setMessage(validate(e.target.value) || '')
+			e.target.style.borderColor ='rgb(217, 43, 73)'
+		}
+		setAmount(e.target.value)
+	}
+
+	const handleEmailInput = (e:any) => {
+		if (!!validate(e.target.value)) {
+			e.target.message = setMessage(validate(e.target.value) || '')
+			e.target.style.borderColor ='rgb(217, 43, 73)'
+		}
+		setSource(e.target.value)
+	} 
 	
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -39,7 +61,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			const data = await res.json()
 
 			if (res.ok) {		
-				window.location.assign(`/transaction?${data.newTransaction.transactionId}`);
+				window.location.assign(`http://localhost:4000/transaction?id=${data.newTransaction.transactionId}`);
 			}
 			
 		} catch(err: any) {
@@ -57,7 +79,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						 <Input 
 						 	onInput={handleEmailInput}
 						 	label="Email"
-							message="" 
+							message={message} 
 							placeholder="Enter the recipient's email" 
 							type="email" 
 							value={source}
@@ -65,9 +87,9 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						 <Input
 						 	onInput={handleSumInput}
 						 	label="Sum" 
-							message="" 
+							message={message} 
 							placeholder="Enter amount" 
-							type="text" 
+							type="number" 
 							value={amount}
 						></Input>
 

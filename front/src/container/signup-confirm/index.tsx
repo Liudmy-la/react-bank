@@ -7,9 +7,7 @@ import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
 
-import {
-	FIELD_ERROR
-} from '../../util/form';
+import {FIELD_ERROR} from '../../util/form';
 import { getTokenSession, saveSession } from "../../util/session";
 
 interface ChildProps {

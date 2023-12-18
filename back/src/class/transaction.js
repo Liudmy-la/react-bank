@@ -54,7 +54,7 @@ class Transaction {
 
 	static getList = () => {
 		return Transaction.#list.map((transaction) => ({
-			id: transaction.id,
+			id: transaction.transactionId,
 			type: transaction.type,
 			amount: transaction.amount,
 			source: transaction.source,

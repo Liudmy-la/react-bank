@@ -16,7 +16,7 @@ Transaction.create({
 
 Transaction.create({
 	type: 'receive',
-	amount: 800,
+	amount: 1500,
 	source: 'coinbase',
 })
 
@@ -36,7 +36,6 @@ router.get('/balance', function (req, res) {
 
 router.post('/send', function (req, res) {
 	const { type, amount, source} = req.body
-	console.log(Number(amount), source, type)
 
 	if (!amount || !source) {
 		return res.status(400).json({
@@ -47,9 +46,6 @@ router.post('/send', function (req, res) {
 	try {
 		const newTransaction = Transaction.create({type, amount, source});
 		console.log(newTransaction);
-		
-		console.log(Transaction.balance);
-		
 
 		return res.status(200).json({
 			message: `Success!`,
@@ -63,19 +59,45 @@ router.post('/send', function (req, res) {
 	}
 })
 
-
 // ===============================================
 
 router.get('/transaction', function (req, res) {
 	const id = Number(req.query.id)
 
 	res.json({
-		list: Transaction.getById(id),
+		info: Transaction.getById(id),
 	});
   });
   
 
 //=================================================
+
+router.post('/receive', function (req, res) {
+	const { type, amount, source} = req.body
+
+	if (!amount) {
+		return res.status(400).json({
+			message: `Enter the amount!`,
+		})
+	}
+
+	try {
+		const newTransaction = Transaction.create({type, amount, source});
+		console.log(newTransaction);
+
+		return res.status(200).json({
+			message: `Success!`,
+			newTransaction,
+		})
+
+	} catch (err) {
+		return res.status(400).json({
+			message: err.message,
+		})
+	}
+})
+
+// ===============================================
 
 //=================================================
 
