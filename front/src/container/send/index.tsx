@@ -61,7 +61,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			const data = await res.json()
 
 			if (res.ok) {		
-				window.location.assign(`http://localhost:4000/transaction?id=${data.newTransaction.transactionId}`);
+				window.location.assign(`http://localhost:3000/transaction/${data.newTransaction.transactionId}`);
 			}
 			
 		} catch(err: any) {
@@ -99,6 +99,9 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						>
 							Send
 						</Button>
+
+					{/* {newTransaction ? <Location to={`/transaction/${newTransaction.id}`} /> : <Infofield error />}		 */}
+
 					</Column>
 				</form>
 			</Column>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import WellcomePage from "./container/index";
@@ -15,34 +15,28 @@ import TransactionPage from "./container/transaction";
 import BalancePage from "./container/balance";
 import Error from "./container/error";
 
-import { loadSession } from "./util/session";
-loadSession();
+const AuthContext = createContext<boolean | null>(null);
 
+const PrivateRoute: React.FC<{children: React.ReactNode}> = ({children}) => {	
+	const isLogged = useContext(AuthContext)
+	return isLogged ? <>{children}</> : <WellcomePage/>
+};
 
-type ContextType = {
-	isLogged: boolean;
-	login: (status: boolean) => void;
-}
-
-const AuthContext = createContext<ContextType | null>(null);
-
-const PrivateRoute: React.FC<{children: React.ReactNode}> = ({
-	children,
-}) => {
-	const auth = useContext(AuthContext);
-
-	if(!auth) return <Error />
-
-	return auth.isLogged ? <>{children}</> : <WellcomePage/>
+const AuthRoute: React.FC<{children: React.ReactNode}> = ({children}) => {
+	const isLogged = useContext(AuthContext)
+	return isLogged ? <BalancePage/> : <>{children}</> 
 };
 
 function App() {
-	const [isLogged, login] = React.useState(true);
+	const [isLogged, setIsLogged] = useState<boolean | null>(null);
+
+	useEffect(() => {
+		const hasActiveSession = window.localStorage.length > 0;
+		setIsLogged(hasActiveSession);
+	  }, []);
 
 	return (
-		// value={authContextData}
-		<AuthContext.Provider 
-			value={{isLogged, login}}>
+		<AuthContext.Provider value={isLogged}>
 	   
 		<BrowserRouter>
 			<Routes>
@@ -50,18 +44,18 @@ function App() {
 				<Route
 					index
 					element={
-					// <AuthRoute>
+					<AuthRoute>
 						<WellcomePage />
-					// </AuthRoute>
+					</AuthRoute>
 					}
 				/>
 		
 				<Route
 					path="/signup"
 					element={
-					// <AuthRoute>
+					<AuthRoute>
 						<SignupPage children/>
-					// </AuthRoute>
+					</AuthRoute>
 					}
 				/>
 		
@@ -77,27 +71,27 @@ function App() {
 				<Route
 					path="/signin"
 					element={
-					// <AuthRoute>
+					<AuthRoute>
 						<SigninPage children/>
-					// </AuthRoute>
+					</AuthRoute>
 					}
 				/>
 			
 				<Route
 					path="/recovery"
 					element={
-					// <AuthRoute>
+					<AuthRoute>
 						<RecoveryPage children/>
-					// </AuthRoute>
+					</AuthRoute>
 					}
 				/>
 					
 				<Route
 					path="/recovery-confirm"
 					element={
-					// <AuthRoute>
+					<AuthRoute>
 						<RecoveryConfirmPage children/>
-					// </AuthRoute>
+					</AuthRoute>
 					}
 				/>
 	   	   
@@ -147,10 +141,10 @@ function App() {
 				/>
 	   	   
 				<Route
-					path="/transaction"
+					path="/transaction/*"
 					element={
 						<PrivateRoute>
-							<TransactionPage children/>
+							<TransactionPage children id={5}/>
 						</PrivateRoute>
 					}
 				/>

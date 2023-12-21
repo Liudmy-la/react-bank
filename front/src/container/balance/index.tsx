@@ -19,25 +19,31 @@ interface Data {
   }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [data, setData] = useState<Data | null>(null);	
-
-	useEffect(() => {
-		const fetchData = async () => {
-		  try {
-			const res = await fetch('http://localhost:4000/balance');
-			if (!res.ok) {
-			  throw new Error(`Error fetching data`);
-			}
-
-			const data = await res.json();
-			setData(data);
-		  } catch (error) {			
-				console.error('Error fetching data from the server.');
-		  }
-		};
+	const [data, setData] = useState<Data | null>(null);
 	
-		fetchData();
+	const getData = async () => {
+		try {
+		  const res = await fetch('http://localhost:4000/balance');
+		  if (!res.ok) {
+			throw new Error(`Error fetching data`);
+		  }
+
+		  const data = await res.json();
+		  setData(data);
+		} catch (error) {			
+			  console.error('Error fetching data from the server.');
+		}
+	  };
+
+	useEffect(() => {	
+		getData();
 	  }, []);
+
+	const handleItemClick = (id:number) => async () => {
+			await fetch(`http://localhost:4000/transaction?id=${id}`);
+
+			window.location.assign(`http://localhost:3000/transaction/${id}`);
+	}
 
 	return (
 		<Page>
@@ -53,7 +59,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				</div>
 
 				<div className="amount-title--white">
-				{`$ ${data?.balance}` || 'Calculating ...'}
+					{`$ ${data?.balance}` || 'Calculating ...'}
 				</div>
 
 				<div className="actions__block">
@@ -69,20 +75,16 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 					{data?.list.length !== 0
 						? data?.list.map((trans) => (
-							<Listitem
-								key={trans.id}
-								onItemClick={
-									async (transactionId: number) => {
-										await fetch(`http://localhost:4000/transaction?id=${trans.id}`);
-										window.location.assign(`/transaction?id=${trans.id}`);
-									}
-								}
-								className={trans.type === 'send' ? `owner ${trans.source}` : trans.source}
-								itemtitle={trans.source.toUpperCase()}
-								info={trans.type === 'send' ? `- $ ${trans.amount}` : `+ $ ${trans.amount}`}
-								details={trans.date}
-							></Listitem>
-							
+							<React.Fragment key={trans.id}>
+								<Listitem
+									onItemClick={handleItemClick(trans.id)}
+									
+									className={trans.type === 'send' ? `owner ${trans.source}` : trans.source}
+									itemtitle={trans.source.toUpperCase()}
+									info={trans.type === 'send' ? `- $ ${trans.amount}` : `+ $ ${trans.amount}`}
+									details={trans.date}
+								></Listitem>
+							</React.Fragment>
 						))
 						: <Infofield> You have no completed transactions yet.</Infofield>
 					}

@@ -25,7 +25,10 @@ export default function Component({
 			<div className="inner__block">
 				<div className="title__block">
 					<div className="item-title">{itemtitle}</div>
-					<div className="details">{details}</div>
+					{details 
+						? <div className="details">{details}</div>
+						: null
+					}
 				</div>
 				<div className="info" style={{...style}}>{info}</div>
 			</div>			

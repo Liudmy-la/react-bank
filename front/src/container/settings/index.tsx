@@ -7,13 +7,17 @@ import Button from "../../component/button";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 import Divider from "../../component/divider";
-// import { useNavigate } from "react-router-dom";
 
 interface ChildProps {
 	children: React.ReactNode;
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
+	const handleLogoutClick = () => {
+		window.localStorage.clear();
+		window.location.href = '/';
+	  }
+
 	return (
 		<Page>			
 			<Column className="column--20">  						
@@ -44,10 +48,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				<Divider/>
 				
 				<Button 
-					onClick={() => {
-						window.sessionStorage.clear();
-						window.location.href = '/';
-					  }}
+					onClick={handleLogoutClick}
 					className="button button--primary button--outline button--alarm"
 				>
 					Log out

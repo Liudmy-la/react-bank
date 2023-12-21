@@ -51,7 +51,8 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			const data = await res.json()
 
 			if (res.ok) {		
-				window.location.assign(`http://localhost:4000/transaction?id=${data.newTransaction.transactionId}`);
+				// window.location.assign(`/transaction/${data.newTransaction.transactionId}`);
+				window.location.assign(`/transaction`);
 			}
 			
 		} catch(err: any) {
@@ -68,7 +69,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							<div className="subtitle">Receive amount</div>							
 							<Input
 								onInput={handleSumInput}
-								label="Sum" 
+								label="" 
 								message={message} 
 								placeholder="Enter amount" 
 								type="number" 
