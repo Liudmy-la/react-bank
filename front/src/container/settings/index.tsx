@@ -20,7 +20,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			window.localStorage.clear();
 			window.location.href = '/';
 		}
-	  }
+	}
 
 	return (
 		<Page>			

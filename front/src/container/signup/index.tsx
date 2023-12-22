@@ -23,62 +23,60 @@ interface ChildProps {
 };
   
 export default function Component ({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState('')	
-	const [password, setPassword] = useState('')
-	const [messageE, setMessageE] = useState('')
-	const [messageP, setMessageP] = useState('')
-	const [messageD, setMessageD] = useState('')
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [messageE, setMessageE] = useState('');
+	const [messageP, setMessageP] = useState('');
+	const [messageD, setMessageD] = useState('');
 
 	const validate = (type: string, value: string) => {
 		if (String(value).trim().length < 1) {
 			return FIELD_ERROR.IS_EMPTY
 		}
 	
-		if (String(value).trim().length > 20) {
+		if (String(value).trim().length > 30) {
 		  return FIELD_ERROR.IS_BIG
 		}
 	
-		if (type === email) {
-			if (!REG_EXP_EMAIL.test(String(value)))
-				return FIELD_ERROR.EMAIL
+		if (type === 'email' && !REG_EXP_EMAIL.test(String(value))) {
+			return FIELD_ERROR.EMAIL;
 		}
-	
-		if (type === password) {
-			if (!REG_EXP_PASSWORD.test(String(value)))
-				return FIELD_ERROR.PASSWORD
+	  
+		if (type === 'password' && !REG_EXP_PASSWORD.test(String(value))) {
+			return FIELD_ERROR.PASSWORD;
 		}
+
+		return '';
 	};
 		
 	const handleMailInput = (e: any) => {
-		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageE(validate(e.target.type, e.target.value) || ``)
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setEmail(e.target.value)
+		const errorMessage = validate('email', e.target.value);
+		e.target.message = setMessageE(errorMessage);
+		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
+		setEmail(e.target.value);
 	}
 
-	const handlePassInput = (e:any) =>  {
-		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageP(validate(e.target.type, e.target.value) || ``)
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setPassword(e.target.value)
+	const handlePassInput = (e:any) =>  {		
+		const errorMessage = validate('password', e.target.value);
+		e.target.message = setMessageP(errorMessage);
+		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
+		setPassword(e.target.value);
 	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		const emailError = validate('email', email);
+		const passwordError = validate('password', password);
 
-		const convertData = () => {
-			if (!email || !password) {
-				setMessageD(`You Haven't Entered Your Data Yet!`)
-				return null
-			}
-
-			return JSON.stringify({email, password})
+		if (emailError || passwordError) {
+			setMessageE(emailError);
+			setMessageP(passwordError);
+			setMessageD('Please fix the errors before submitting.');
+			return;
 		}
+		
+		const convertData = JSON.stringify({email, password})
 
 		try {
 			const res = await fetch('http://localhost:4000/signup', {
@@ -86,19 +84,21 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: convertData(),
+					body: convertData,
 			})
 
 			const data = await res.json()
-			if (!res.ok && data.field) {
-				setMessageE(data.message); 
+
+			if (!res.ok) {
+				if (data.field) {
+					setMessageP(data.message);
+				} 
 				return;
 			}
-		
-			if (res.ok) {
-				saveSession(data.session);
-				window.location.assign("/signup-confirm");
-			}
+					
+			saveSession(data.initSession);
+			window.location.assign("/signup-confirm");
+			
 			
 		} catch(err: any) {
 			console.error(err.message)
@@ -153,4 +153,3 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 		</Page>
 	  )
   }
-

@@ -27,7 +27,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			return FIELD_ERROR.IS_EMPTY
 		}
 	
-		if (String(value).length > 20) {
+		if (String(value).length > 30) {
 		  return FIELD_ERROR.IS_BIG
 		}
 		

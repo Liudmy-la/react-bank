@@ -69,9 +69,9 @@ function App() {
 				<Route
 					path="/signup-confirm"
 					element={
-						<PrivateRoute>
+						<AuthRoute>
 							<SignupConfirmPage children/>
-						</PrivateRoute>
+						</AuthRoute>
 					}
 				/>
 		

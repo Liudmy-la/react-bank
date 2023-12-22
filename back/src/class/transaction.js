@@ -43,7 +43,7 @@ class Transaction {
 		return Transaction.#balance;
 	};
 
-	static getById (transactionId) {
+	static getById(transactionId) {
 		return (
 			this.#list.find((item) => item.transactionId === Number(transactionId))
 			 || null

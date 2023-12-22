@@ -67,9 +67,8 @@ router.get('/transaction', function (req, res) {
 	res.json({
 		info: Transaction.getById(id),
 	});
-  });
+});
   
-
 //=================================================
 
 router.post('/receive', function (req, res) {

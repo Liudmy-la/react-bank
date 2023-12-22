@@ -25,36 +25,29 @@ User.create({
 
 //=================================================
 
-router.get('/signup', function (req, res) {	
-	return res.render('signup', {
-		name: 'signup',
-		component: [
-			'page',
-			'column',
-			'button',
-			'input',
-			'heading',
-		],
+// router.get('/signup', function (req, res) {	
+// 	return res.render('signup', {
+// 		name: 'signup',
+// 		component: [
+// 			'page',
+// 			'column',
+// 			'button',
+// 			'input',
+// 			'heading',
+// 		],
 	
-		title: 'Signup Page',
+// 		title: 'Signup Page',
 		
-	  });
-  });
+// 	  });
+//   });
 
   //=================================================
 
 router.post('/signup', function (req, res) {	
 	const { email, password } = req.body
 
-	if (!email || !password) {
-		return res.status(400).json({
-			message: `Fill in the required fields!`,	
-		})
-	}
-
 	try {
-		const user = User.getByEmail(email)
-
+		const user = User.getByData(email)
 		if (user) {
 			return res.status(400).json({
 				message: `User with this email already exists!`,				
@@ -65,7 +58,7 @@ router.post('/signup', function (req, res) {
 		const newUser = User.create({ email, password });
 		console.log('New User: ', newUser);
 
-    	const initSession = Session.create(user)  ;
+    	const initSession = Session.create(newUser) ;
 		console.log('Current Session ', initSession.token);
 
 			Confirm.create(newUser.email);
@@ -76,31 +69,32 @@ router.post('/signup', function (req, res) {
 			initSession,
 		  })
 		} catch (err) {
-		  return res.status(400).json({
-			message: err.message,
-		  })
+			return res.status(400).json({
+				message: `Error creating newUser: ${err.message}`,
+			})
 		}
 	  })
 
 //=================================================	  
 
-router.get('/signup-confirm', function (req, res) {	
-	return res.render('signup', {
-		name: 'signup',
-		component: [
-			'page',
-			'column',
-			'button',
-			'input',
-			'heading',
-		],
+// router.get('/signup-confirm', function (req, res) {	
+// 	return res.render('signup', {
+// 		name: 'signup',
+// 		component: [
+// 			'page',
+// 			'column',
+// 			'button',
+// 			'input',
+// 			'heading',
+// 		],
 	
-		title: 'Signup-confirm Page',
+// 		title: 'Signup-confirm Page',
 		
-	  });
-  });
+// 	  });
+//   });
 
 //=================================================
+
 router.post('/signup-confirm', function (req, res) {	
 	const { code, token } = req.body
 
@@ -137,10 +131,10 @@ router.post('/signup-confirm', function (req, res) {
 			})
 		}
 
-		const user = User.getByEmail(email)
+		const user = User.getByData(email)
 		
     	const session = Session.create(user)  ;
-		console.log('Current Session ', session.token);
+		console.log('New Session > ', session.token);
 
 		user.isConfirm = true;
 		session.user.isConfirm = true;
@@ -160,21 +154,21 @@ router.post('/signup-confirm', function (req, res) {
 })
 //=================================================
 
-router.get('/signin', function (req, res) {	
-	return res.render('signup', {
-		name: 'signin',
-		component: [
-			'page',
-			'column',
-			'button',
-			'input',
-			'heading',
-		],
+// router.get('/signin', function (req, res) {	
+// 	return res.render('signup', {
+// 		name: 'signin',
+// 		component: [
+// 			'page',
+// 			'column',
+// 			'button',
+// 			'input',
+// 			'heading',
+// 		],
 	
-		title: 'Signin Page',
+// 		title: 'Signin Page',
 		
-	  });
-  });
+// 	  });
+//   });
 
 //=================================================
 
@@ -188,7 +182,7 @@ router.post('/signin', function (req, res) {
 	}
 
 	try {
-		const user = User.getByEmail(email)
+		const user = User.getByData(email)
 		console.log('Hi there, ', user.email)
 
 		if (!user) {
@@ -222,7 +216,6 @@ router.post('/signin', function (req, res) {
 		}
 	  })
 
-
 //=================================================
 
 router.post('/recovery', function (req, res) {	
@@ -236,7 +229,7 @@ router.post('/recovery', function (req, res) {
 	}
 
 	try {
-		const user = User.getByEmail(email)
+		const user = User.getByData(email)
 		console.log(user)
 
 		if (!user) {
@@ -262,6 +255,7 @@ router.post('/recovery', function (req, res) {
 })
 
 //=================================================
+
 router.post('/recovery-confirm', function (req, res) {	
 	const { code, password } = req.body
 
@@ -282,14 +276,14 @@ router.post('/recovery-confirm', function (req, res) {
 			})
 		}
 
-		const user = User.getByEmail(email);
+		const user = User.getByData(email);
 
 		console.log(`Initial: `, user);
 		console.log(`NEW: `, password);
 
 		User.updatePass(email, password);
 
-		const updUser = User.getByEmail(email);
+		const updUser = User.getByData(email);
 		console.log(`Updated: `, updUser);
 		
 		return res.status(200).json({
@@ -304,6 +298,34 @@ router.post('/recovery-confirm', function (req, res) {
 })
 //=================================================
 
+router.post('/settings', function (req, res) {	
+	const { currentData, newData, customerId } = req.body
+
+	try {
+		const user = User.getByData(customerId)
+		console.log(user)
+
+		if (!user) {
+			return res.status(400).json({
+				message: `User with this data doesn't exist.`,
+				field: 'data',
+			})
+		}
+
+		user.updateData(currentData, newData)
+		
+		console.log('Updated user: ', user);
+		
+		return res.status(200).json({
+			message: `Update successful!`,
+			})
+			
+	} catch (err) {
+		return res.status(400).json({
+			message: err.message,
+		})
+	}
+})
 
 //=================================================
 

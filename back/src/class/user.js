@@ -19,35 +19,33 @@ class User {
 
 		return user;
 	};
-
-	static getByEmail(email) {
-		return (
-			this.#list.find((user) => user.email === String(email).toLowerCase())
-			|| null
-		)
-	};
-
-	static getById(userId) {
-		return (
-			this.#list.find((user) => user.userId === Number(userId))
-			|| null
-		)
-	};
-
-	// static updateEmail (incData, email) {
-	// 	const user = User.getByEmail(incData);
 	
-	// 	if (user && email) {
+	static getByData(data) {
+		if (typeof(data) === 'number') {
+			return (
+				this.#list.find((user) => user.userId === data)
+				|| null
+			)
+		} else {
+			return (
+				this.#list.find((user) => user.email === data.toLowerCase())
+				|| null
+			)
+		}
+	};
+
+	// static updateData (currentData, newData) {
+	// 	const user = User.getByData(incData);
+		// 	if (user && email) {
 	// 			user.email = String(newData.email).toLowerCase();
 	// 		}
 	// 		return true;
 	// 	}
-	
 	// 	return false;
 	// };
 
 	static updatePass (email, password) {
-		const user = User.getByEmail(email);
+		const user = User.getByData(email);
 	
 		if (user && password) user.password = String(password);
 			
@@ -55,7 +53,7 @@ class User {
 	};
 
 	static userConfirm (email) {
-		const user = User.getByEmail(email);
+		const user = User.getByData(email);
 	
 		if (user) user.isConfirm = true;
 			
@@ -64,7 +62,5 @@ class User {
 
 	static getList = () => this.#list;
 };
-
-// static updateSavings
 
 module.exports = { User };
