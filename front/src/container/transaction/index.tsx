@@ -5,10 +5,11 @@ import Page from "../../component/page";
 import Column from "../../component/column";
 import Opthead from "../../component/option-heading";
 import Divider from "../../component/divider";
+import { useParams } from "react-router-dom";
 
 interface ChildProps {
 	children: React.ReactNode;
-	id?: number;
+	// id: number;
 }
 
 interface TransactionInfo {
@@ -19,8 +20,10 @@ interface TransactionInfo {
 	type: string;
   }
   
-export default function Component({children, id}: ChildProps):React.ReactElement {
+export default function Component({children}: ChildProps):React.ReactElement {
 	const [data, setData] = useState<TransactionInfo | null>(null);
+	
+	const {id} = useParams<{id?:any}>();
 	
 	const getData = async () => {
 		try {

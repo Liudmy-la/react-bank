@@ -31,8 +31,15 @@ function App() {
 	const [isLogged, setIsLogged] = useState<boolean | null>(null);
 
 	useEffect(() => {
-		const hasActiveSession = window.localStorage.length > 0;
-		setIsLogged(hasActiveSession);
+		const sessionAuthString = window.localStorage.sessionAuth;
+
+		try {
+			const sessionAuthObject = JSON.parse(sessionAuthString);
+			const isConfirm = sessionAuthObject.user.isConfirm;
+			setIsLogged(isConfirm);
+		} catch (error) {
+			console.error('Error parsing JSON:', error);
+		}
 	  }, []);
 
 	return (
@@ -141,10 +148,10 @@ function App() {
 				/>
 	   	   
 				<Route
-					path="/transaction/*"
+					path="/transaction/:id"
 					element={
 						<PrivateRoute>
-							<TransactionPage children id={5}/>
+							<TransactionPage children/>
 						</PrivateRoute>
 					}
 				/>

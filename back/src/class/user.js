@@ -1,7 +1,7 @@
 class User {
 	static #list = [];
 	static #count = 1;	
-	// static #balance = 12000;
+	static #savings = 10;
 
 	constructor({email, password}) {
 		this.email = String(email).toLowerCase();
@@ -9,6 +9,7 @@ class User {
 
 		this.isConfirm = false;
 		this.userId = User.#count++;
+		this.property = User.#savings
 	};
 
 	static create(data) {
@@ -53,7 +54,17 @@ class User {
 		return false;
 	};
 
+	static userConfirm (email) {
+		const user = User.getByEmail(email);
+	
+		if (user) user.isConfirm = true;
+			
+		return false;
+	};
+
 	static getList = () => this.#list;
 };
+
+// static updateSavings
 
 module.exports = { User };

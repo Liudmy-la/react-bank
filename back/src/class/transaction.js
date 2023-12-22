@@ -29,9 +29,7 @@ class Transaction {
 			} else if (this.type === 'receive') {
 				Transaction.#balance += this.amount;
 			}
-	  
-		// this.updatedBalance = Transaction.#balance;
-		};
+	  	};
 
 	
 

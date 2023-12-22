@@ -115,3 +115,14 @@
 
 	z-index: -2;
 }
+
+.trans-list {
+	max-height: 550px;
+	overflow-y: auto;
+
+	border-bottom: 5px solid rgba(104, 81, 194, 0.05);
+}
+
+.trans-list::-webkit-scrollbar {
+	display: none;
+}

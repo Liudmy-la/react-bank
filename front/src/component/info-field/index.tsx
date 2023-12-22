@@ -11,7 +11,7 @@ export default function Component({children, className = "", style = {}}:ChildPr
 	return (
 		<div 
 			className={`infofield ${className}`} 
-			style={{...style}}
+			style={{...style}} 
 		>
 			<span className = "warn__icon"></span>
 			{children}

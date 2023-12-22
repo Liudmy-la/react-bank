@@ -50,9 +50,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 			const data = await res.json()
 
-			if (res.ok) {		
-				// window.location.assign(`/transaction/${data.newTransaction.transactionId}`);
-				window.location.assign(`/transaction`);
+			if (res.ok) {
+				const move = window.confirm("Are You Sure?")
+
+				if (move) {
+				window.location.assign(`http://localhost:3000/transaction/${data.newTransaction.transactionId}`);
+				}
 			}
 			
 		} catch(err: any) {

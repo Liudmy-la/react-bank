@@ -14,8 +14,12 @@ interface ChildProps {
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	const handleLogoutClick = () => {
-		window.localStorage.clear();
-		window.location.href = '/';
+		const move = window.confirm("Are You Sure?")
+
+		if (move) {
+			window.localStorage.clear();
+			window.location.href = '/';
+		}
 	  }
 
 	return (

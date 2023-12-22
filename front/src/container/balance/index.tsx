@@ -72,7 +72,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				</div>
 				
 				<Column className="column--1">
-
+				<div className="trans-list">
 					{data?.list.length !== 0
 						? data?.list.map((trans) => (
 							<React.Fragment key={trans.id}>
@@ -88,6 +88,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						))
 						: <Infofield> You have no completed transactions yet.</Infofield>
 					}
+				</div>
 					
 				</Column>	
 				

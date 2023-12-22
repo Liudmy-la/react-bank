@@ -9,13 +9,19 @@ const { Session } = require('../class/session');
 User.create({
 	email: 'gooduser1@mail.com',
 	password: 'mhvjbA45',
-})
+});
+	User.userConfirm('gooduser1@mail.com');
   
 User.create({
 	email: 'gooduser2@mail.com',
 	password: 'mhvjbA44',
-})
+});
+	User.userConfirm('gooduser2@mail.com');
 
+User.create({
+	email: 'plainuser@mail.com',
+	password: 'mhvjbA43',
+});
 
 //=================================================
 
@@ -59,15 +65,15 @@ router.post('/signup', function (req, res) {
 		const newUser = User.create({ email, password });
 		console.log('New User: ', newUser);
 
-    	const session = Session.create(newUser)  ;
-		console.log('Current Session ', session.token);
+    	const initSession = Session.create(user)  ;
+		console.log('Current Session ', initSession.token);
 
 			Confirm.create(newUser.email);
 			console.log('Confirm with this code: ', Confirm.getCode(newUser.email));
 
 		return res.status(200).json({
 			message: `User has been successfully created!`,
-			session,
+			initSession,
 		  })
 		} catch (err) {
 		  return res.status(400).json({
@@ -106,8 +112,8 @@ router.post('/signup-confirm', function (req, res) {
 	}
 
 	try {
-		const session = Session.get(token)  ;
-		if (!session) {
+		const initSession = Session.get(token)  ;
+		if (!initSession) {
 			return res.status(400).json({
 				message: `Come back and Sign In!`,				
 				field: 'data',
@@ -124,14 +130,18 @@ router.post('/signup-confirm', function (req, res) {
 			})
 		}
 
-		if (email !== session.user.email) {
+		if (email !== initSession.user.email) {
 			return res.status(400).json({
 				message: `This code is wrong! `,				
 				field: 'email',
 			})
 		}
 
-		const user = User.getByEmail(session.user.email)
+		const user = User.getByEmail(email)
+		
+    	const session = Session.create(user)  ;
+		console.log('Current Session ', session.token);
+
 		user.isConfirm = true;
 		session.user.isConfirm = true;
 

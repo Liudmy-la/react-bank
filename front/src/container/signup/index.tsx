@@ -8,7 +8,7 @@ import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
-// import Infofield from "../../component/info-field";
+import Infofield from "../../component/info-field";
 
 import {
 	REG_EXP_EMAIL,
@@ -27,13 +27,14 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 	const [password, setPassword] = useState('')
 	const [messageE, setMessageE] = useState('')
 	const [messageP, setMessageP] = useState('')
+	const [messageD, setMessageD] = useState('')
 
 	const validate = (type: string, value: string) => {
-		if (String(value).length < 1) {
+		if (String(value).trim().length < 1) {
 			return FIELD_ERROR.IS_EMPTY
 		}
 	
-		if (String(value).length > 20) {
+		if (String(value).trim().length > 20) {
 		  return FIELD_ERROR.IS_BIG
 		}
 	
@@ -50,7 +51,7 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 		
 	const handleMailInput = (e: any) => {
 		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageE(validate(e.target.type, e.target.value) || '')
+			e.target.message = setMessageE(validate(e.target.type, e.target.value) || ``)
 			e.target.style.borderColor ='rgb(217, 43, 73)'
 		}
 		
@@ -59,7 +60,7 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 
 	const handlePassInput = (e:any) =>  {
 		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageP(validate(e.target.type, e.target.value) || '')
+			e.target.message = setMessageP(validate(e.target.type, e.target.value) || ``)
 			e.target.style.borderColor ='rgb(217, 43, 73)'
 		}
 		
@@ -69,9 +70,15 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+
 		const convertData = () => {
+			if (!email || !password) {
+				setMessageD(`You Haven't Entered Your Data Yet!`)
+				return null
+			}
+
 			return JSON.stringify({email, password})
-		}		
+		}
 
 		try {
 			const res = await fetch('http://localhost:4000/signup', {
@@ -88,8 +95,10 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 				return;
 			}
 		
-			saveSession(data.session)		
-			window.location.assign("/signup-confirm")
+			if (res.ok) {
+				saveSession(data.session);
+				window.location.assign("/signup-confirm");
+			}
 			
 		} catch(err: any) {
 			console.error(err.message)
@@ -133,9 +142,11 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 							Continue
 						</Button>
 
-						{/* <Infofield className="infofield field--warn disabled">
-							A user with the same name is already exist
-						</Infofield> */}
+						<Infofield
+								className={`field--warn ${messageD}disabled`}
+							>
+								{messageD}
+						</Infofield>
 					</Column>
 				</form>
 			</Column>
