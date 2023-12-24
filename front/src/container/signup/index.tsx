@@ -23,11 +23,12 @@ interface ChildProps {
 };
   
 export default function Component ({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [messageE, setMessageE] = useState('');
-	const [messageP, setMessageP] = useState('');
-	const [messageD, setMessageD] = useState('');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [messageE, setMessageE] = useState<string>('');
+	const [messageP, setMessageP] = useState<string>('');
+	const [messageD, setMessageD] = useState<string>('');	
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	const validate = (type: string, value: string) => {
 		if (String(value).trim().length < 1) {
@@ -105,6 +106,10 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 		}
 	}
 
+	const handlePassVisibility = () => {
+		setShowPassword((prevShowPassword) => !prevShowPassword);
+	};
+
 	  return (
 		<Page>			
 			<Column className="column--20">  						
@@ -123,11 +128,13 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 						<Input
 							onInput={handlePassInput}
 							label="Password"
-							className="disappear"
 							message={messageP}
 							placeholder="Enter Your Password"
 							type="password"
 							value={password}
+							
+							showPassword={showPassword}
+							onPassVisibility={handlePassVisibility}
 						></Input>
 
 						<div>

@@ -34,21 +34,13 @@ class User {
 		}
 	};
 
-	// static updateData (currentData, newData) {
-	// 	const user = User.getByData(incData);
-		// 	if (user && email) {
-	// 			user.email = String(newData.email).toLowerCase();
-	// 		}
-	// 		return true;
-	// 	}
-	// 	return false;
-	// };
-
-	static updatePass (email, password) {
-		const user = User.getByData(email);
-	
-		if (user && password) user.password = String(password);
-			
+	static updateData (user, typeNewData, newData) {
+		if (typeNewData === 'email') {
+			user.email = String(newData).toLowerCase();
+			return true;
+		} else if (typeNewData === 'password') {
+			user.password = String(newData);
+		}
 		return false;
 	};
 
@@ -56,7 +48,6 @@ class User {
 		const user = User.getByData(email);
 	
 		if (user) user.isConfirm = true;
-			
 		return false;
 	};
 

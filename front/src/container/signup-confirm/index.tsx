@@ -15,8 +15,8 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [code, setCode] = useState('')
-	const [message, setMessage] = useState('')
+	const [code, setCode] = useState<string>('')
+	const [message, setMessage] = useState<string>('')
 
 	const validate = (value: string) => {
 		if (String(value).length < 1) {

@@ -18,10 +18,6 @@ User.create({
 });
 	User.userConfirm('gooduser2@mail.com');
 
-User.create({
-	email: 'plainuser@mail.com',
-	password: 'mhvjbA43',
-});
 
 //=================================================
 
@@ -277,14 +273,10 @@ router.post('/recovery-confirm', function (req, res) {
 		}
 
 		const user = User.getByData(email);
+			console.log(`Initial: `, user);
 
-		console.log(`Initial: `, user);
-		console.log(`NEW: `, password);
-
-		User.updatePass(email, password);
-
-		const updUser = User.getByData(email);
-		console.log(`Updated: `, updUser);
+		User.updateData(user, typeNewData='password', password);
+			console.log(`Updated: `, user);
 		
 		return res.status(200).json({
 			message: `Sign In with NEW data!`,
@@ -299,7 +291,9 @@ router.post('/recovery-confirm', function (req, res) {
 //=================================================
 
 router.post('/settings', function (req, res) {	
-	const { currentData, newData, customerId } = req.body
+
+	const { currentData, typeNewData, newData, customerId } = req.body
+	console.log(currentData, newData, customerId)
 
 	try {
 		const user = User.getByData(customerId)
@@ -307,22 +301,26 @@ router.post('/settings', function (req, res) {
 
 		if (!user) {
 			return res.status(400).json({
-				message: `User with this data doesn't exist.`,
+				message: `User with this data is absent in DB.`,
+				field: 'data',
+			})
+		} else if (user.password !== currentData) {			
+			return res.status(400).json({
+				message: `Current Data is not correct.`,
 				field: 'data',
 			})
 		}
 
-		user.updateData(currentData, newData)
-		
+		User.updateData(user, typeNewData, newData)
 		console.log('Updated user: ', user);
 		
 		return res.status(200).json({
-			message: `Update successful!`,
+			message: `Updated successful!`,
 			})
 			
 	} catch (err) {
 		return res.status(400).json({
-			message: err.message,
+			message: `Fault Data`,
 		})
 	}
 })

@@ -17,10 +17,11 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [code, setCode] = useState('')	
-	const [password, setPassword] = useState('')
-	const [messageC, setMessageC] = useState('')
-	const [messageP, setMessageP] = useState('')
+	const [code, setCode] = useState<string>('')	
+	const [password, setPassword] = useState<string>('');
+	const [messageC, setMessageC] = useState<string>('');
+	const [messageP, setMessageP] = useState<string>('');
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	const validate = (type: string, value: string) => {
 		if (String(value).length < 1) {
@@ -83,6 +84,10 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			console.error(err.message)
 		}
 	}
+
+	const handlePassVisibility = () => {
+		setShowPassword((prevShowPassword) => !prevShowPassword);
+	};
 	
 	return (
 		<Page>			
@@ -107,11 +112,13 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						<Input						
 							onInput={handlePassInput}
 							label="New password"
-							className="appear"
 							message={messageP}
 							placeholder="Enter NEW Password"
 							type="password"
 							value={password}
+							
+							showPassword={showPassword}
+							onPassVisibility={handlePassVisibility}
 						></Input>
 
 						<Button

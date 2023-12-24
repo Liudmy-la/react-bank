@@ -14,8 +14,8 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState('')
-	const [message, setMessage] = useState('')
+	const [email, setEmail] = useState<string>('')
+	const [message, setMessage] = useState<string>('')
 
 	const validate = (value: string) => {
 		if (String(value).length < 1) {
@@ -76,8 +76,8 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							onInput={handleCodeInput}
 							label="Email"
 							message={message}
-							placeholder="example@mail.com"
-							type="text"
+							placeholder="Enter your Email"
+							type="email"
 							value={email}
 						/>
 						

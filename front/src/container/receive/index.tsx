@@ -15,10 +15,10 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	type Data = number | string | null
+	type Data = number | string
 
 	const [amount, setAmount] = useState<Data>('')	
-	const [message, setMessage] = useState('')
+	const [message, setMessage] = useState<string>('')
 
 	const validate = (value: string) => {
 		if (String(value).length < 1) {

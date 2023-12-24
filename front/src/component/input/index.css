@@ -29,28 +29,21 @@
 	color: rgb(28, 13, 0);
 }
 
-/* .appear {
-	width: 24px;
-	height: 24px;
-	background-image: url("../../../public/svg/icon-appear.svg");
-	background-repeat: no-repeat;
-	background-position: center center;
-
-	position: absolute;
-	top: 16px;
-  	right: 16px;
+.appear,
+.disappear {
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
- */
 
-/* .disappear {
-	width: 24px;
-	height: 24px;
-	background-image: url("../../../public/svg/icon-disappear.svg");
-	background-repeat: no-repeat;
-	background-position: center center;
+.appear {
+  background-image: url("../../../public/svg/icon-appear.svg");
+}
 
-	position: absolute;
-	top: 16px;
-  	right: 16px;
-
-} */
+.disappear {
+  background-image: url("../../../public/svg/icon-disappear.svg");
+}
