@@ -7,6 +7,7 @@ import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
+import Infofield from "../../component/info-field";
 
 import {FIELD_ERROR} from '../../util/form';
 
@@ -17,9 +18,11 @@ interface ChildProps {
 export default function Component({children}: ChildProps):React.ReactElement {
 	type Data = number | string
 
-	const [amount, setAmount] = useState<Data>('')	
-	const [source, setSource] = useState<Data>('')
-	const [message, setMessage] = useState<string>('')
+	const [amount, setAmount] = useState<Data>('');
+	const [source, setSource] = useState<Data>('');
+	const [messageE, setMessageE] = useState<string>('');
+	const [messageS, setMessageS] = useState<string>('');
+	const [messageD, setMessageD] = useState<string>('');	
 
 	const validate = (value: string) => {
 		if (String(value).length < 1) {
@@ -29,7 +32,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	
 	const handleSumInput = (e: any) => {
 		if (!!validate(e.target.value)) {
-			e.target.message = setMessage(validate(e.target.value) || '')
+			e.target.message = setMessageS(validate(e.target.value) || '')
 			e.target.style.borderColor ='rgb(217, 43, 73)'
 		}
 		setAmount(e.target.value)
@@ -37,7 +40,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 	const handleEmailInput = (e:any) => {
 		if (!!validate(e.target.value)) {
-			e.target.message = setMessage(validate(e.target.value) || '')
+			e.target.message = setMessageE(validate(e.target.value) || '')
 			e.target.style.borderColor ='rgb(217, 43, 73)'
 		}
 		setSource(e.target.value)
@@ -66,6 +69,9 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				if (move) {
 					window.location.assign(`http://localhost:3000/transaction/${data.newTransaction.transactionId}`);
 				}
+			} else {
+				const errorData = data || {}; 
+				setMessageD(errorData.message || 'An error occurred.');
 			}
 			
 		} catch(err: any) {
@@ -83,7 +89,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						 <Input 
 						 	onInput={handleEmailInput}
 						 	label="Email"
-							message={message} 
+							message={messageE} 
 							placeholder="Enter the recipient's email" 
 							type="email" 
 							value={source}
@@ -91,7 +97,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						 <Input
 						 	onInput={handleSumInput}
 						 	label="Sum" 
-							message={message} 
+							message={messageS} 
 							placeholder="Enter amount" 
 							type="number" 
 							value={amount}
@@ -104,7 +110,11 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							Send
 						</Button>
 
-					{/* {newTransaction ? <Location to={`/transaction/${newTransaction.id}`} /> : <Infofield error />}		 */}
+						<Infofield
+								className={`field--warn ${messageD}disabled`}
+							>
+								{messageD}
+						</Infofield>
 
 					</Column>
 				</form>

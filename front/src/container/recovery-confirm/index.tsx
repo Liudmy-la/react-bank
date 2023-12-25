@@ -60,7 +60,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 		e.preventDefault();
 
 		const convertData = () => {
-			return JSON.stringify({code, password})
+			return JSON.stringify({code, password, getInfo:window.navigator.userAgent})
 		}		
 
 		try {

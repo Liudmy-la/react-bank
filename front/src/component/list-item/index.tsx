@@ -7,15 +7,17 @@ interface ChildProps {
 	style?: React.CSSProperties;
 	itemtitle: string;
 	details?: string;
+	noteInfo?: string;
 	info?: string;
 }
 
 export default function Component({
-	className = "", 
-	style = {}, 
-	itemtitle = '', 
+	className ="", 
+	style={}, 
+	itemtitle='', 
 	info, 
-	details, 
+	details,
+	noteInfo,
 	onItemClick
 }:ChildProps):React.ReactElement {
 	
@@ -25,6 +27,10 @@ export default function Component({
 			<div className="inner__block">
 				<div className="title__block">
 					<div className="item-title">{itemtitle}</div>
+					{noteInfo 
+						? <div className="noteInfo">{noteInfo}</div>
+						: null
+					}
 					{details 
 						? <div className="details">{details}</div>
 						: null

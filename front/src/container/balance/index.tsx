@@ -16,7 +16,7 @@ interface Data {
 	balance: number | string; 
 	list: any[] | null[]; 
 	notifications: string;
-  }
+}
   
 export default function Component({children}: ChildProps):React.ReactElement {
 	const [data, setData] = useState<Data | null>(null);
@@ -54,7 +54,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 					</Link>
 					<div className="wallet">Main wallet</div>
 					<Link to="/notifications">
-						<div className='icon-button nott'>{`+${data?.notifications}` || ' 0'}</div>
+						<div className='icon-button nott'>{`+${data?.notifications}` || ''}</div>
 					</Link>
 				</div>
 

@@ -51,7 +51,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 		e.preventDefault();
 
 		const convertData = () => {
-			return JSON.stringify({email, password})
+			return JSON.stringify({email, password, getInfo:window.navigator.userAgent})
 		}
 
 		try {

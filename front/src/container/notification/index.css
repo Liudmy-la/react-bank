@@ -1,4 +1,18 @@
-.notifications .info__block:hover {
+.note-list *:hover {
 		border-color: transparent;
 		box-shadow: none;
+}
+
+
+.note-list {
+	max-height: 720px;
+	overflow-y: auto;
+
+	border-bottom: 8px solid rgba(104, 81, 194, 0.05);
+	border-radius: 12px;
+	outline: 1px solid rgba(104, 81, 194, 0.02);
+}
+
+.note-list::-webkit-scrollbar {
+	display: none;
 }

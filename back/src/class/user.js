@@ -1,7 +1,7 @@
 class User {
 	static #list = [];
 	static #count = 1;	
-	static #savings = 10;
+	static #savings = 50;
 
 	constructor({email, password}) {
 		this.email = String(email).toLowerCase();

@@ -5,6 +5,7 @@ const router = express.Router();
 const { User } = require('../class/user');
 const { Confirm } = require('../class/confirm');
 const { Session } = require('../class/session');
+const { Notification } = require('../class/notification');
 
 User.create({
 	email: 'gooduser1@mail.com',
@@ -17,7 +18,6 @@ User.create({
 	password: 'mhvjbA44',
 });
 	User.userConfirm('gooduser2@mail.com');
-
 
 //=================================================
 
@@ -92,7 +92,7 @@ router.post('/signup', function (req, res) {
 //=================================================
 
 router.post('/signup-confirm', function (req, res) {	
-	const { code, token } = req.body
+	const { code, token, getInfo } = req.body
 
 	if (!code) {
 		return res.status(400).json({
@@ -136,7 +136,9 @@ router.post('/signup-confirm', function (req, res) {
 		session.user.isConfirm = true;
 
 		console.log(user)
-		
+
+		Notification.create({action:'sign up', name:user.email , info:getInfo});
+				
 		return res.status(200).json({
 			message: `Welcome!`,
 			session,
@@ -169,7 +171,7 @@ router.post('/signup-confirm', function (req, res) {
 //=================================================
 
 router.post('/signin', function (req, res) {	
-	const { email, password } = req.body
+	const { email, password, getInfo } = req.body
 
 	if (!email || !password) {
 		return res.status(400).json({
@@ -199,6 +201,8 @@ router.post('/signin', function (req, res) {
 		console.log('Current Session ', session);
 
 		
+		Notification.create({action:'sign in', name:user.email , info:getInfo});
+				
 		return res.status(200).json({
 			message: `Welcome!`,
 			session,
@@ -253,7 +257,7 @@ router.post('/recovery', function (req, res) {
 //=================================================
 
 router.post('/recovery-confirm', function (req, res) {	
-	const { code, password } = req.body
+	const { code, password, getInfo } = req.body
 
 	if (!code) {
 		return res.status(400).json({
@@ -277,7 +281,9 @@ router.post('/recovery-confirm', function (req, res) {
 
 		User.updateData(user, typeNewData='password', password);
 			console.log(`Updated: `, user);
-		
+
+		Notification.create({action:'data recovery', name:user.email , info:getInfo});
+			
 		return res.status(200).json({
 			message: `Sign In with NEW data!`,
 		})
@@ -285,42 +291,6 @@ router.post('/recovery-confirm', function (req, res) {
 	} catch (err) {
 		return res.status(400).json({
 			message: err.message,
-		})
-	}
-})
-//=================================================
-
-router.post('/settings', function (req, res) {	
-
-	const { currentData, typeNewData, newData, customerId } = req.body
-	console.log(currentData, newData, customerId)
-
-	try {
-		const user = User.getByData(customerId)
-		console.log(user)
-
-		if (!user) {
-			return res.status(400).json({
-				message: `User with this data is absent in DB.`,
-				field: 'data',
-			})
-		} else if (user.password !== currentData) {			
-			return res.status(400).json({
-				message: `Current Data is not correct.`,
-				field: 'data',
-			})
-		}
-
-		User.updateData(user, typeNewData, newData)
-		console.log('Updated user: ', user);
-		
-		return res.status(200).json({
-			message: `Updated successful!`,
-			})
-			
-	} catch (err) {
-		return res.status(400).json({
-			message: `Fault Data`,
 		})
 	}
 })
