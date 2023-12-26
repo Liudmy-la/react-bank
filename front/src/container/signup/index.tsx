@@ -154,6 +154,13 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 							>
 								{messageD}
 						</Infofield>
+												
+						{/* <Infofield
+								className={`field--warn ${state.messageD}disabled`}
+							>
+								{state.messageD}
+						</Infofield> */}
+
 					</Column>
 				</form>
 			</Column>

@@ -2,7 +2,7 @@ import React from 'react';
 import "./index.css";
 
 interface ChildProps {
-	onItemClick?: any;
+	onItemClick?: () => void;
 	className?: string;
 	style?: React.CSSProperties;
 	itemtitle: string;
@@ -14,7 +14,7 @@ interface ChildProps {
 export default function Component({
 	className ="", 
 	style={}, 
-	itemtitle='', 
+	itemtitle="", 
 	info, 
 	details,
 	noteInfo,

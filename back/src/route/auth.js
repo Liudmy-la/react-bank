@@ -175,7 +175,8 @@ router.post('/signin', function (req, res) {
 
 	if (!email || !password) {
 		return res.status(400).json({
-			message: `Fill in all required fields!`,	
+			message: `Fill in all required fields!`,			
+			field: 'data',	
 		})
 	}
 
@@ -183,12 +184,12 @@ router.post('/signin', function (req, res) {
 		const user = User.getByData(email)
 		console.log('Hi there, ', user.email)
 
-		if (!user) {
-			return res.status(400).json({
-				message: `This user hasn't an account!`,				
-				field: 'email',
-			})
-		}
+		// if (!user) {
+		// 	return res.status(400).json({
+		// 		message: `This user hasn't an account!`,				
+		// 		field: 'email',
+		// 	})
+		// }
 		
 		if (user.password !== password) {
 			return res.status(400).json({

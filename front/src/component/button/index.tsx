@@ -6,7 +6,7 @@ interface ChildProps {
 	className?: string;
 	style?: React.CSSProperties;	
 	onClick?: () => void;
-	type?: any;
+	type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 export default function Component({
@@ -14,7 +14,7 @@ export default function Component({
 	className, 
 	style = {}, 
 	onClick,
-	type
+	type = 'button'
 }:ChildProps):React.ReactElement {
 	return (		
 		<button
