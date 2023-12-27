@@ -1,41 +1,37 @@
 import "./index.css";
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Page from "../../component/page";
 import Column from "../../component/column";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 import Divider from "../../component/divider";
 import Listitem from "../../component/list-item";
+import Infofield from "../../component/info-field";
 
-import {FIELD_ERROR} from '../../util/form';
+import {validate, initialState, SET, reducer } from '../../util/form';
 
 interface ChildProps {
 	children: React.ReactNode;
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	type Data = number | string
-
-	const [amount, setAmount] = useState<Data>('')	
-	const [message, setMessage] = useState<string>('')
-
-	const validate = (value: string) => {
-		if (String(value).length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
-	}
+	const [state, dispatch] = useReducer(reducer, initialState);
 	
-	const handleSumInput = (e: any) => {
-		if (!!validate(e.target.value)) {
-			e.target.message = setMessage(validate(e.target.value) || '')
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		setAmount(e.target.value)
+	const handleSumInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value);
+		dispatch({ type: SET.SET_AMOUNT, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_SUM, payload: errorMessage });
 	}
 
 	const handleItemClick = async (source: string) => {
 	  
+		const { amount } = state;
+		if (!amount) {
+			dispatch({ type: SET.SET_MESSAGE_SUM, payload: 'Enter the required amount.' });
+			return;
+		}
+
 		const data = {amount, source, type: "receive"};
 		const convertData = JSON.stringify(data);
 
@@ -49,8 +45,10 @@ export default function Component({children}: ChildProps):React.ReactElement {
 			})
 
 			const data = await res.json()
-
-			if (res.ok) {
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
+				return;
+			} else if (res.ok) {
 				const move = window.confirm("Are You Sure?")
 
 				if (move) {
@@ -73,15 +71,22 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							<Input
 								onInput={handleSumInput}
 								label="" 
-								message={message} 
+								message={state.messageSum} 
 								placeholder="Enter amount" 
 								type="number" 
-								value={amount}
+								value={state.amount}
+								style={{ borderColor: state.messageSum ? 'rgb(217, 43, 73)' : '' }} 
 							></Input>
+						
+							<Infofield
+										className={`field--warn ${state.messageData}disabled`}
+									>
+										{state.messageData}
+							</Infofield>
 						</Column>
 
 						<Divider/>
-
+						
 						<Column className="column--12">
 							<div className="subtitle">Payment system</div>
 							<Listitem
@@ -98,10 +103,8 @@ export default function Component({children}: ChildProps):React.ReactElement {
 								onItemClick={() => handleItemClick('Coinbase')}
 								info=''
 							></Listitem>
-						{/* {newTransaction ? <Location to={`/transaction/${newTransaction.id}`} /> : <Infofield error />}		 */}
-						</Column>				
-				
-						</Column>
+						</Column>	
+					</Column>
 			</Column>
 			<div className="action-image"></div>
 		</Page>

@@ -1,6 +1,6 @@
-import "./index.css";
+import "./index.css"; 
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { Link } from 'react-router-dom';
 
 import Page from "../../component/page";
@@ -9,74 +9,41 @@ import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
 import Infofield from "../../component/info-field";
-
-import {
-	REG_EXP_EMAIL,
-	REG_EXP_PASSWORD,
-	FIELD_ERROR
-} from '../../util/form';
   
 import { saveSession } from '../../util/session';
+import {validate, initialState, SET, reducer } from '../../util/form';
 
 interface ChildProps {
 	children: React.ReactNode;
 };
   
 export default function Component ({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
-	const [messageE, setMessageE] = useState<string>('');
-	const [messageP, setMessageP] = useState<string>('');
-	const [messageD, setMessageD] = useState<string>('');	
-	const [showPassword, setShowPassword] = useState<boolean>(false);
-
-	const validate = (type: string, value: string) => {
-		if (String(value).trim().length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
+	const [state, dispatch] = useReducer(reducer, initialState);
 	
-		if (String(value).trim().length > 30) {
-		  return FIELD_ERROR.IS_BIG
-		}
-	
-		if (type === 'email' && !REG_EXP_EMAIL.test(String(value))) {
-			return FIELD_ERROR.EMAIL;
-		}
-	  
-		if (type === 'password' && !REG_EXP_PASSWORD.test(String(value))) {
-			return FIELD_ERROR.PASSWORD;
-		}
-
-		return '';
-	};
-		
-	const handleMailInput = (e: any) => {
-		const errorMessage = validate('email', e.target.value);
-		e.target.message = setMessageE(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setEmail(e.target.value);
+	const handleMailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value, 'email');
+		dispatch({ type: SET.SET_EMAIL, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_E, payload: errorMessage });
 	}
 
-	const handlePassInput = (e:any) =>  {		
-		const errorMessage = validate('password', e.target.value);
-		e.target.message = setMessageP(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setPassword(e.target.value);
+	const handlePassInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
+		const errorMessage = validate(e.target.value,'password');
+		dispatch({ type: SET.SET_PASSWORD, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_P, payload: errorMessage });
 	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		
+		const { email, password } = state;
 
-		const emailError = validate('email', email);
-		const passwordError = validate('password', password);
+		const emailError = validate(email, 'email');
+		const passwordError = validate(password, 'password');
 
 		if (emailError || passwordError) {
-			setMessageE(emailError);
-			setMessageP(passwordError);
-			setMessageD('Please fix the errors before submitting.');
+			dispatch({ type: SET.SET_MESSAGE_DATA, payload: 'Please fix the errors before submitting.' });
 			return;
 		}
-		
 		const convertData = JSON.stringify({email, password})
 
 		try {
@@ -90,16 +57,19 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 
 			const data = await res.json()
 
-			if (!res.ok) {
-				if (data.field) {
-					setMessageP(data.message);
-				} 
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
 				return;
+			} else if (!res.ok && data.field === 'email') {
+				dispatch({ type: SET.SET_MESSAGE_E, payload: data.message });
+				return;
+			} else if (!res.ok && data.field === 'password') {
+				dispatch({ type: SET.SET_MESSAGE_P, payload: data.message });
+				return;
+			} else if (res.ok) {					
+				saveSession(data.initSession);
+				window.location.assign("/signup-confirm");
 			}
-					
-			saveSession(data.initSession);
-			window.location.assign("/signup-confirm");
-			
 			
 		} catch(err: any) {
 			console.error(err.message)
@@ -107,7 +77,7 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 	}
 
 	const handlePassVisibility = () => {
-		setShowPassword((prevShowPassword) => !prevShowPassword);
+		dispatch({ type: SET.TOGGLE_VISIBILITY });
 	};
 
 	  return (
@@ -121,19 +91,21 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 							onInput={handleMailInput}
 							label="Email"
 							placeholder="Enter Your Email"							
-							message={messageE}
+							message={state.messageE}
 							type="email"
-							value={email}
+							value={state.email}
+							style={{ borderColor: state.messageE ? 'rgb(217, 43, 73)' : '' }} 
 						></Input>
 						<Input
 							onInput={handlePassInput}
 							label="Password"
-							message={messageP}
+							message={state.messageP}
 							placeholder="Enter Your Password"
 							type="password"
-							value={password}
-							
-							showPassword={showPassword}
+							value={state.password}
+							style={{ borderColor: state.messageP ? 'rgb(217, 43, 73)' : '' }} 
+
+							showPassword={state.showPassword}
 							onPassVisibility={handlePassVisibility}
 						></Input>
 
@@ -150,16 +122,10 @@ export default function Component ({children}: ChildProps):React.ReactElement {
 						</Button>
 
 						<Infofield
-								className={`field--warn ${messageD}disabled`}
+								className={`field--warn ${state.messageData}disabled`}
 							>
-								{messageD}
+								{state.messageData}
 						</Infofield>
-												
-						{/* <Infofield
-								className={`field--warn ${state.messageD}disabled`}
-							>
-								{state.messageD}
-						</Infofield> */}
 
 					</Column>
 				</form>

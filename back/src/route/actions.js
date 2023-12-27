@@ -61,7 +61,8 @@ router.post('/send', function (req, res) {
 
 		if (type === 'send' && amount > balance) {
 			return res.status(400).json({
-				message: `Your balance is insufficient. Enter a lower amount.`,
+				message: `Your balance is insufficient. Enter a lower amount.`,			
+				field: 'data',
 			});
 		}
 
@@ -112,7 +113,8 @@ router.post('/receive', function (req, res) {
 
 	} catch (err) {
 		return res.status(400).json({
-			message: err.message,
+			message: `Error. Transaction is not completed.`,			
+			field: 'data',
 		})
 	}
 })
@@ -135,7 +137,7 @@ router.post('/settings', function (req, res) {
 		} else if (user.password !== currentData) {			
 			return res.status(400).json({
 				message: `Current Data is not correct.`,
-				field: 'data',
+				field: 'password',
 			})
 		}
 
@@ -148,7 +150,8 @@ router.post('/settings', function (req, res) {
 			
 	} catch (err) {
 		return res.status(400).json({
-			message: `Fault Data`,
+			message: `Fault Data Updating`,
+			field: 'data',
 		})
 	}
 })

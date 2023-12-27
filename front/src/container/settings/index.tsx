@@ -1,97 +1,64 @@
 import "./index.css";
 
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import Page from "../../component/page";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
 import Opthead from "../../component/option-heading";
 import Divider from "../../component/divider";
+import Infofield from "../../component/info-field";
 
-import {
-	REG_EXP_EMAIL,
-	REG_EXP_PASSWORD,
-	FIELD_ERROR
-} from '../../util/form';
+import {validate, initialState, SET, reducer } from '../../util/form';
 
 interface ChildProps {
 	children: React.ReactNode;
 }
   
-export default function Component({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState<string>('');
-	const [passwordConf, setPasswordConf] = useState<string>('');
-	const [passwordOld, setPasswordOld] = useState<string>('');
-	const [passwordNew, setPasswordNew] = useState<string>('');
-	const [messageE, setMessageE] = useState<string>('');
-	const [messagePC, setMessagePC] = useState<string>('');
-	const [messagePO, setMessagePO] = useState<string>('');
-	const [messagePN, setMessagePN] = useState<string>('');
-	const [showPassword, setShowPassword] = useState<boolean>(false);
+export default function Component({children}: ChildProps):React.ReactElement {	
+	const [state, dispatch] = useReducer(reducer, initialState);
+	const [activeForm, setActiveForm] = useState('');
 
-	const validate = (type: string, value: string) => {
-		if (String(value).trim().length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
-	
-		if (String(value).trim().length > 30) {
-		  return FIELD_ERROR.IS_BIG
-		}
-	
-		if (type === 'email' && !REG_EXP_EMAIL.test(String(value))) {
-			return FIELD_ERROR.EMAIL;
-		}
-	  
-		if (type === 'password' && !REG_EXP_PASSWORD.test(String(value))) {
-			return FIELD_ERROR.PASSWORD;
-		}
-
-		return '';
-	};
-
-	const handleMailInput = (e: any) => {
-		const errorMessage = validate('email', e.target.value);
-		e.target.message = setMessageE(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setEmail(e.target.value);
+	const handleMailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value, 'email');
+		dispatch({ type: SET.SET_EMAIL, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_E, payload: errorMessage });
 	}
 
-	const handlePassConfInput = (e:any) =>  {		
-		const errorMessage = validate('password', e.target.value);
-		e.target.message = setMessagePC(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setPasswordConf(e.target.value);
+	const handlePassConfInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
+		const errorMessage = validate(e.target.value);
+		dispatch({ type: SET.SET_PASSWORD, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_P, payload: errorMessage });
 	}
 
-	const handlePassOldInput = (e:any) =>  {		
-		const errorMessage = validate('password', e.target.value);
-		e.target.message = setMessagePO(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setPasswordOld(e.target.value);
+	const handlePassOldInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
+		const errorMessage = validate(e.target.value);
+		dispatch({ type: SET.SET_PASSWORD_OLD, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_PASS_OLD, payload: errorMessage });
 	}
 
-	const handlePassNewInput = (e:any) =>  {		
-		const errorMessage = validate('password', e.target.value);
-		e.target.message = setMessagePN(errorMessage);
-		e.target.style.borderColor = errorMessage ? 'rgb(217, 43, 73)' : '';
-		setPasswordNew(e.target.value);
+	const handlePassNewInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
+		const errorMessage = validate(e.target.value,'password');
+		dispatch({ type: SET.SET_PASSWORD_NEW, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_PASS_NEW, payload: errorMessage });
 	}
 
 	const handleNewEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setActiveForm('email');
+		
+		const { email, password } = state;
 
-		const emailError = validate('email', email);
-		const passwordError = validate('password', passwordConf);
+			const emailError = validate(email, 'email');
+			const passwordError = validate(password);
 
-		if (emailError || passwordError) {
-			setMessagePC(passwordError)
-			setMessageE('Please fix the error before submitting.');
-			return;
-		}
+			if (!email || emailError || !password || passwordError) {
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: `Enter the correct data!` });
+			}
 		
 		const id = JSON.parse(window.localStorage.sessionAuth).user.userId
 
-		const convertData = JSON.stringify({currentData:passwordConf, typeNewData:'email', newData:email, customerId:id})
+		const convertData = JSON.stringify({currentData:password, typeNewData:'email', newData:email, customerId:id})
 
 		try {
 			const res = await fetch('http://localhost:4000/settings', {
@@ -104,18 +71,18 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 			const data = await res.json()
 
-			if (!res.ok) {
-				if (data.field) {
-					setMessagePC(data.message);
-				} 
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
 				return;
+			} else if (!res.ok && data.field === 'password') {
+				dispatch({ type: SET.SET_MESSAGE_P, payload: data.message });
+				return;
+			} else if (res.ok) {	
+				const move = window.confirm("Are You Sure?")
+				if (move) {
+					window.location.assign("/balance");
+				}
 			}
-					
-			const move = window.confirm("Are You Sure?")
-			if (move) {
-				window.location.assign("/balance");
-			}
-			
 		} catch(err: any) {
 			console.error(`Fetching error`, err.message)
 		}
@@ -123,15 +90,17 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 	const handleNewPassSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setActiveForm('password');
 
-		const passOldError = validate('password', passwordOld);
-		const passNewError = validate('password', passwordNew);
+		const { passwordOld, passwordNew } = state;
 
-		if (passOldError || passNewError) {
-			setMessagePO(passOldError);
-			setMessagePN('Please fix the errors before submitting.');
-			return;
-		}
+			const passOldError = validate(passwordOld);
+			const passNewError = validate(passwordNew, 'password');
+
+			if (!passwordOld || passOldError || !passwordNew || passNewError) {
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: `Enter the correct data!` });
+			}
+		
 		
 		const id = JSON.parse(window.localStorage.sessionAuth).user.userId
 		const convertData = JSON.stringify({currentData:passwordOld, typeNewData:'password', newData:passwordNew, customerId:id})
@@ -147,18 +116,18 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 			const data = await res.json()
 
-			if (!res.ok) {
-				if (data.field) {
-					setMessagePO(data.message);
-				} 
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
 				return;
+			} else if (!res.ok && data.field === 'password') {
+				dispatch({ type: SET.SET_MESSAGE_P, payload: data.message });
+				return;
+			} else if (res.ok){	
+				const move = window.confirm("Are You Sure?")
+				if (move) {
+					window.location.assign("/balance");
+				}
 			}
-					
-			const move = window.confirm("Are You Sure?")
-			if (move) {
-				window.location.assign("/balance");
-			}
-			
 		} catch(err: any) {
 			console.error(err.message)
 		}
@@ -173,12 +142,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 		}
 	}
 	const handlePassVisibility = () => {
-		setShowPassword((prevShowPassword) => !prevShowPassword);
+		dispatch({ type: SET.TOGGLE_VISIBILITY });
 	};
 
 	return (
 		<Page>			
-			<Column className="column--20">  						
+			<Column className="column--20 settings-box">  						
 				<Opthead  backTo="/balance" title="Settings"></Opthead>
 
 				<form method="POST" onSubmit={handleNewEmailSubmit}>
@@ -187,21 +156,21 @@ export default function Component({children}: ChildProps):React.ReactElement {
 							<Input
 								onInput={handleMailInput}
 								label="NEW Email"
-								message={messageE}
+								message={state.messageE}
 								placeholder="Enter your NEW Email address"
 								type="email"
-								value={email}
+								value={state.email}
 							></Input>
 							<Input
 								onInput={handlePassConfInput}
 								label="Current Password"
 								className="appear"
-								message={messagePC}
+								message={state.messageP}
 								placeholder="* * * * * * * *"
 								type="password"
-								value={passwordConf}
+								value={state.password}
 							
-								showPassword={showPassword}
+								showPassword={state.showPassword}
 								onPassVisibility={handlePassVisibility}
 							></Input>
 
@@ -211,6 +180,16 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						>
 							Save New Email
 						</Button>
+
+						{
+							activeForm === 'email' && (						
+								<Infofield
+										className={`field--warn ${state.messageData}disabled`}
+									>
+										{state.messageData}
+								</Infofield>
+							)
+						}
 					</Column>
 				</form>
 
@@ -223,24 +202,24 @@ export default function Component({children}: ChildProps):React.ReactElement {
 								onInput={handlePassOldInput}
 						 		label="Current Password"
 								className="appear"
-								message={messagePO}
+								message={state.messagePO}
 								placeholder = "* * * * * * * *"
 								type="password"
-								value={passwordOld}
+								value={state.passwordOld}
 							
-								showPassword={showPassword}
+								showPassword={state.showPassword}
 								onPassVisibility={handlePassVisibility}
 							></Input>
 							<Input
 								onInput={handlePassNewInput}
 								label="NEW password"
 								className="appear"
-								message={messagePN}
+								message={state.messagePN}
 								placeholder="Enter your NEW password"
 								type="password"
-								value={passwordNew}
+								value={state.passwordNew}
 							
-								showPassword={showPassword}
+								showPassword={state.showPassword}
 								onPassVisibility={handlePassVisibility}
 							></Input>
 						
@@ -250,6 +229,16 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						>
 								Save New Password
 						</Button>
+					
+						{
+							activeForm === 'password' && (						
+								<Infofield
+										className={`field--warn ${state.messageData}disabled`}
+									>
+										{state.messageData}
+								</Infofield>
+							)
+						}
 					</Column>
 				</form>
 

@@ -21,24 +21,6 @@ User.create({
 
 //=================================================
 
-// router.get('/signup', function (req, res) {	
-// 	return res.render('signup', {
-// 		name: 'signup',
-// 		component: [
-// 			'page',
-// 			'column',
-// 			'button',
-// 			'input',
-// 			'heading',
-// 		],
-	
-// 		title: 'Signup Page',
-		
-// 	  });
-//   });
-
-  //=================================================
-
 router.post('/signup', function (req, res) {	
 	const { email, password } = req.body
 
@@ -66,28 +48,11 @@ router.post('/signup', function (req, res) {
 		  })
 		} catch (err) {
 			return res.status(400).json({
-				message: `Error creating newUser: ${err.message}`,
+				message: `Error creating new user.`,
+				field: 'data',
 			})
 		}
 	  })
-
-//=================================================	  
-
-// router.get('/signup-confirm', function (req, res) {	
-// 	return res.render('signup', {
-// 		name: 'signup',
-// 		component: [
-// 			'page',
-// 			'column',
-// 			'button',
-// 			'input',
-// 			'heading',
-// 		],
-	
-// 		title: 'Signup-confirm Page',
-		
-// 	  });
-//   });
 
 //=================================================
 
@@ -97,7 +62,7 @@ router.post('/signup-confirm', function (req, res) {
 	if (!code) {
 		return res.status(400).json({
 			message: `Enter your code!`,				
-			field: 'code',
+			field: 'data',
 		})
 	}
 
@@ -115,15 +80,15 @@ router.post('/signup-confirm', function (req, res) {
 
 		if (!email) {
 			return res.status(400).json({
-				message: `This code is wrong!`,				
-				field: 'code',
+				message: `This code is wrong!`,	
+				field: 'data',
 			})
 		}
 
 		if (email !== initSession.user.email) {
 			return res.status(400).json({
-				message: `This code is wrong! `,				
-				field: 'email',
+				message: `This code is wrong! `,	
+				field: 'data',
 			})
 		}
 
@@ -146,7 +111,8 @@ router.post('/signup-confirm', function (req, res) {
 			
 	} catch (err) {
 		return res.status(400).json({
-			message: err.message,
+			message: `Error verifying new user.`,
+			field: 'data',
 		})
 	}
 })
@@ -184,16 +150,16 @@ router.post('/signin', function (req, res) {
 		const user = User.getByData(email)
 		console.log('Hi there, ', user.email)
 
-		// if (!user) {
-		// 	return res.status(400).json({
-		// 		message: `This user hasn't an account!`,				
-		// 		field: 'email',
-		// 	})
-		// }
+		if (!user) {
+			return res.status(400).json({
+				message: `This user hasn't an account.`,				
+				field: 'email',
+			})
+		}
 		
 		if (user.password !== password) {
 			return res.status(400).json({
-				message: `This password is wrong!`,		
+				message: `This password is wrong.`,		
 				field: 'password',
 			})
 		} 
@@ -211,8 +177,8 @@ router.post('/signin', function (req, res) {
 			
 		} catch (err) {
 		  return res.status(400).json({
-			message: `This user hasn't an account!`,				
-			field: 'email',
+			message: `Enter valid user details!`,				
+			field: 'data',
 		  })
 		}
 	  })
@@ -235,8 +201,7 @@ router.post('/recovery', function (req, res) {
 
 		if (!user) {
 			return res.status(400).json({
-				message: `User with this email doesn't exist. 
-							Come back and Sign Up!`,
+				message: `User with this email doesn't exist.`,
 				field: 'email',
 			})
 		}
@@ -250,7 +215,8 @@ router.post('/recovery', function (req, res) {
 			
 	} catch (err) {
 		return res.status(400).json({
-			message: err.message,
+			message: `Enter valid user details!`,				
+			field: 'data',
 		})
 	}
 })
@@ -273,7 +239,7 @@ router.post('/recovery-confirm', function (req, res) {
 		if (!email) {
 			return res.status(400).json({
 				message: `This code is wrong!`,				
-				field: 'code',
+				field: 'data',
 			})
 		}
 
@@ -291,7 +257,8 @@ router.post('/recovery-confirm', function (req, res) {
 			
 	} catch (err) {
 		return res.status(400).json({
-			message: err.message,
+			message: `Password change error. Check your code or try to restore again.`,
+			field: 'data',
 		})
 	}
 })

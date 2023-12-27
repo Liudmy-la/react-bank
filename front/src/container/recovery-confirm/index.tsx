@@ -1,92 +1,73 @@
 import "./index.css";
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Page from "../../component/page";
 import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
+import Infofield from "../../component/info-field";
 
-import {
-	REG_EXP_PASSWORD,
-	FIELD_ERROR
-} from '../../util/form';
+import {validate, initialState, SET, reducer } from '../../util/form';
   
 interface ChildProps {
 	children: React.ReactNode;
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [code, setCode] = useState<string>('')	
-	const [password, setPassword] = useState<string>('');
-	const [messageC, setMessageC] = useState<string>('');
-	const [messageP, setMessageP] = useState<string>('');
-	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const validate = (type: string, value: string) => {
-		if (String(value).length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
-	
-		if (String(value).length > 30) {
-		  return FIELD_ERROR.IS_BIG
-		}
-		
-		if (type === password) {
-			if (!REG_EXP_PASSWORD.test(String(value)))
-				return FIELD_ERROR.PASSWORD
-		}
-	};
-
-	const handleCodeInput = (e: any) => {
-		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageC(validate(e.target.type, e.target.value) || '')
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setCode(e.target.value)
+	const handleCodeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value);
+		dispatch({ type: SET.SET_CODE, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_CODE, payload: errorMessage });
 	}
 
-	const handlePassInput = (e:any) =>  {
-		if (!!validate(e.target.type, e.target.value)) {
-			e.target.message = setMessageP(validate(e.target.type, e.target.value) || '')
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setPassword(e.target.value)
+	const handlePassInput = (e:any) =>  {		
+		const errorMessage = validate(e.target.value,'password');
+		dispatch({ type: SET.SET_PASSWORD, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_P, payload: errorMessage });
 	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const convertData = () => {
-			return JSON.stringify({code, password, getInfo:window.navigator.userAgent})
-		}		
+		
+		const { code, password } = state;
 
+		const codeError = validate(code);
+		const passwordError = validate(password, 'password');
+
+		if (codeError || passwordError) {
+			dispatch({ type: SET.SET_MESSAGE_DATA, payload: 'Please fix the errors before submitting.' });
+			return;
+		}
+
+		const convertData = JSON.stringify({code, password, getInfo:window.navigator.userAgent})
+		
 		try {
 			const res = await fetch('http://localhost:4000/recovery-confirm', {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: convertData(),
+					body: convertData,
 			})
 
 			const data = await res.json()
-			if (!res.ok && data.field) {
-				setMessageC(data.message); 
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
 				return;
+			} else if (res.ok) {
+				window.location.assign("/signin")
 			}
-
-			window.location.assign("/signin")
-			
 		} catch(err: any) {
 			console.error(err.message)
 		}
 	}
 
 	const handlePassVisibility = () => {
-		setShowPassword((prevShowPassword) => !prevShowPassword);
+		dispatch({ type: SET.TOGGLE_VISIBILITY });
 	};
 	
 	return (
@@ -103,21 +84,23 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						<Input
 							onInput={handleCodeInput}
 						 	label="Code"
-							message={messageC}
+							message={state.messageCode}
 							placeholder="Enter the received code"
 							type="text"
-							value={code}
+							value={state.code}
+							style={{ borderColor: state.messageCode ? 'rgb(217, 43, 73)' : '' }} 
 						></Input>
 
 						<Input						
 							onInput={handlePassInput}
 							label="New password"
-							message={messageP}
+							message={state.messageP}
 							placeholder="Enter NEW Password"
 							type="password"
-							value={password}
+							value={state.password}
+							style={{ borderColor: state.messageP ? 'rgb(217, 43, 73)' : '' }} 
 							
-							showPassword={showPassword}
+							showPassword={state.showPassword}
 							onPassVisibility={handlePassVisibility}
 						></Input>
 
@@ -127,6 +110,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						>
 							Restore password
 						</Button>	
+						
+						<Infofield
+								className={`field--warn ${state.messageData}disabled`}
+							>
+								{state.messageData}
+						</Infofield>
 					</Column>
 				</form>			
 			</Column>

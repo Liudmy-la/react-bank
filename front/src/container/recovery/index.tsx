@@ -1,43 +1,33 @@
 import "./index.css";
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Page from "../../component/page";
 import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
+import Infofield from "../../component/info-field";
 
-import {FIELD_ERROR} from '../../util/form';
+import {validate, initialState, SET, reducer } from '../../util/form';
 
 interface ChildProps {
 	children: React.ReactNode;	
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [email, setEmail] = useState<string>('')
-	const [message, setMessage] = useState<string>('')
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const validate = (value: string) => {
-		if (String(value).length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
-	}
-
-	const handleCodeInput = (e: any) => {
-		if (!!validate(e.target.value)) {
-			e.target.message = setMessage(validate(e.target.value) || '')
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setEmail(e.target.value)
+	const handleMailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value, 'email');
+		dispatch({ type: SET.SET_EMAIL, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_E, payload: errorMessage });
 	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const convertData = () => {
-			return JSON.stringify({email})
-		}		
+		const { email } = state;
+		const convertData = JSON.stringify({email})
 
 		try {
 			const res = await fetch('http://localhost:4000/recovery', {
@@ -45,17 +35,20 @@ export default function Component({children}: ChildProps):React.ReactElement {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: convertData(),
+					body: convertData,
 			})
 
 			const data = await res.json()
-			if (!res.ok && data.field) {
-				setMessage(data.message); 
-				return;
-			}
-		
-			window.location.assign("/recovery-confirm");
 			
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
+				return;
+			} else if (!res.ok && data.field === 'email') {
+				dispatch({ type: SET.SET_MESSAGE_E, payload: data.message });
+				return;
+			} else if (res.ok) {
+				window.location.assign("/recovery-confirm");
+			}
 		} catch(err: any) {
 			console.error(err.message)
 		}
@@ -73,12 +66,13 @@ export default function Component({children}: ChildProps):React.ReactElement {
 				<form method="POST" onSubmit={handleSubmit}>
 					<Column className="column--20"> 
 						<Input
-							onInput={handleCodeInput}
+							onInput={handleMailInput}
 							label="Email"
-							message={message}
+							message={state.messageE}
 							placeholder="Enter your Email"
 							type="email"
-							value={email}
+							value={state.email}
+							style={{ borderColor: state.messageE ? 'rgb(217, 43, 73)' : '' }} 
 						/>
 						
 						<Button
@@ -87,6 +81,12 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						>
 							Send code
 						</Button>
+
+						<Infofield
+								className={`field--warn ${state.messageData}disabled`}
+							>
+								{state.messageData}
+						</Infofield>
 
 					</Column>
 				</form>

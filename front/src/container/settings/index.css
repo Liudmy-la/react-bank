@@ -1,3 +1,16 @@
+.settings-box {
+	max-height: 775px;
+	overflow-y: auto;
+
+	border-bottom: 8px solid rgba(104, 81, 194, 0.07);
+	border-radius: 12px;
+	outline: 1px solid rgba(104, 81, 194, 0.01);
+}
+
+.settings-box::-webkit-scrollbar {
+	display: none;
+}
+
 .subtitle {
 	font-size: 16px;
 	font-weight: 500;

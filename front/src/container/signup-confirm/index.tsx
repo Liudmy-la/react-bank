@@ -1,13 +1,14 @@
 import "./index.css";
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Page from "../../component/page";
 import Heading from "../../component/heading";
 import Column from "../../component/column";
 import Button from "../../component/button";
 import Input from "../../component/input";
+import Infofield from "../../component/info-field";
 
-import {FIELD_ERROR} from '../../util/form';
+import {validate, initialState, SET, reducer } from '../../util/form';
 import { getTokenSession, saveSession } from "../../util/session";
 
 interface ChildProps {
@@ -15,50 +16,44 @@ interface ChildProps {
 }
   
 export default function Component({children}: ChildProps):React.ReactElement {
-	const [code, setCode] = useState<string>('')
-	const [message, setMessage] = useState<string>('')
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const validate = (value: string) => {
-		if (String(value).length < 1) {
-			return FIELD_ERROR.IS_EMPTY
-		}
-	}
-
-	const handleCodeInput = (e: any) => {
-		if (!!validate(e.target.value)) {
-			e.target.message = setMessage(validate(e.target.value) || '')
-			e.target.style.borderColor ='rgb(217, 43, 73)'
-		}
-		
-		setCode(e.target.value)
+	const handleCodeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const errorMessage = validate(e.target.value);
+		dispatch({ type: SET.SET_CODE, payload: e.target.value });
+		dispatch({ type: SET.SET_MESSAGE_CODE, payload: errorMessage });
 	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const convertData = () => {
-			return JSON.stringify({code, token: getTokenSession(), getInfo:window.navigator.userAgent})
-		}		
+		const { code } = state;
 
+		if (!code) {			
+			dispatch({ type: SET.SET_MESSAGE_CODE, payload: `Enter your code!` });
+			return;
+		}
+
+		const convertData = JSON.stringify({code, token: getTokenSession(), getInfo:window.navigator.userAgent})
+			
 		try {
 			const res = await fetch('http://localhost:4000/signup-confirm', {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: convertData(),
+					body: convertData,
 			})
 
 			const data = await res.json()
 
-			if (!res.ok && data.field) {
-				setMessage(data.message); 
+			if (!res.ok && data.field === 'data') {				
+				dispatch({ type: SET.SET_MESSAGE_DATA, payload: data.message });
 				return;
+			} else if (res.ok) {
+				saveSession(data.session)		
+				window.location.assign("/balance")
 			}
-
-			saveSession(data.session)		
-			window.location.assign("/balance")
-
 		} catch(err: any) {
 			console.error(err.message)
 		}
@@ -75,17 +70,24 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						onInput={handleCodeInput}
 							label="Code"
 							placeholder="Enter the received code"
-							message={message}
+							message={state.messageCode}
 							type="text"
-							value={code}
-						></Input>
+							value={state.code}
+							style={{ borderColor: state.messageCode ? 'rgb(217, 43, 73)' : '' }} 
+							></Input>
 
 						<Button
 							type="submit"
 							className="button button--primary"
 						>
 							Confirm
-						</Button>		
+						</Button>
+						
+						<Infofield
+								className={`field--warn ${state.messageData}disabled`}
+							>
+								{state.messageData}
+						</Infofield>
 					</Column>
 				</form>		
 			</Column>
