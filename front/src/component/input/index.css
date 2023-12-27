@@ -19,7 +19,7 @@
 	color: rgb(217, 43, 73);
 }
 
-.disabled {
+/* .disabled {
 	cursor: not-allowed;
 	background-color: rgb(255, 255, 254);
 }
@@ -27,7 +27,7 @@
 .active {
 	border-color: rgb(104, 81, 194);
 	color: rgb(28, 13, 0);
-}
+} */
 
 .appear,
 .disappear {

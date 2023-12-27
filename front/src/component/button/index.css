@@ -35,14 +35,14 @@
 	border: 1px solid rgb(217, 43, 73);
 }
 
-.unavailable {
+/* .unavailable {
 	opacity: 0.5;
 }
 
 .unavailable:hover {
 	cursor: not-allowed;
 	box-shadow: none;
-}
+} */
 
 .button:active {
 	font-weight: 500;

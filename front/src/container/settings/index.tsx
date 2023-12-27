@@ -18,34 +18,53 @@ interface ChildProps {
 export default function Component({children}: ChildProps):React.ReactElement {	
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [activeForm, setActiveForm] = useState('');
+	const [isEmailFormFilled, setIsEmailFormFilled] = useState(false);
+	const [isPasswordFormFilled, setIsPasswordFormFilled] = useState(false);
 
 	const handleMailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const errorMessage = validate(e.target.value, 'email');
 		dispatch({ type: SET.SET_EMAIL, payload: e.target.value });
 		dispatch({ type: SET.SET_MESSAGE_E, payload: errorMessage });
+		checkEmailFormFilled();
 	}
 
 	const handlePassConfInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
 		const errorMessage = validate(e.target.value);
 		dispatch({ type: SET.SET_PASSWORD, payload: e.target.value });
 		dispatch({ type: SET.SET_MESSAGE_P, payload: errorMessage });
+		checkEmailFormFilled();
 	}
 
 	const handlePassOldInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
 		const errorMessage = validate(e.target.value);
 		dispatch({ type: SET.SET_PASSWORD_OLD, payload: e.target.value });
 		dispatch({ type: SET.SET_MESSAGE_PASS_OLD, payload: errorMessage });
+		checkPasswordFormFilled();
 	}
 
 	const handlePassNewInput = (e: React.ChangeEvent<HTMLInputElement>) =>  {		
 		const errorMessage = validate(e.target.value,'password');
 		dispatch({ type: SET.SET_PASSWORD_NEW, payload: e.target.value });
 		dispatch({ type: SET.SET_MESSAGE_PASS_NEW, payload: errorMessage });
+		checkPasswordFormFilled();
+	}
+
+	const checkEmailFormFilled = () => {
+		const isEmailFilled = Boolean(state.email && !state.messageE);
+		const isPasswordFilled = Boolean(state.password && !state.messageP);
+		setIsEmailFormFilled(isEmailFilled && isPasswordFilled);
+	}
+	
+	const checkPasswordFormFilled = () => {
+		const isPassOldFilled = Boolean(state.passwordOld && !state.messagePO);
+		const isPassNewFilled = Boolean(state.passwordNew && !state.messagePN);
+		setIsPasswordFormFilled(isPassOldFilled && isPassNewFilled);
 	}
 
 	const handleNewEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setActiveForm('email');
+		setActiveForm('email');		
+		checkEmailFormFilled();
 		
 		const { email, password } = state;
 
@@ -91,6 +110,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 	const handleNewPassSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setActiveForm('password');
+		checkPasswordFormFilled();
 
 		const { passwordOld, passwordNew } = state;
 
@@ -176,7 +196,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 
 						<Button
 							type="submit"
-							className="button button--primary button--outline"
+							className={`button ${isEmailFormFilled ? 'button--primary' : 'button--primary button--outline'}`}
 						>
 							Save New Email
 						</Button>
@@ -225,7 +245,7 @@ export default function Component({children}: ChildProps):React.ReactElement {
 						
 						<Button
 							type="submit"
-							className="button button--primary button--outline"
+							className={`button ${isPasswordFormFilled ? 'button--primary' : 'button--primary button--outline'}`}
 						>
 								Save New Password
 						</Button>
